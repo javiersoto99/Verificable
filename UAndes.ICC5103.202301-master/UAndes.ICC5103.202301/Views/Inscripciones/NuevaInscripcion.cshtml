@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Nueva Inscripcion";
+}
+
+<h2>Nueva Declaración de Enajenación e Inscripción de Bienes Raíces</h2>
+
+<div class="container" style="margin-top: 6rem;">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nAtencion">N° Atención</label>
+                <input type="text" class="form-control" id="nAtencion" disabled>
+            </div>
+            <div class="form-group">
+                <label for="cneSelect">Código Naturaleza Escritura</label>
+                <select class="form-control" id="cneSelect">
+                    <option value=0 selected disabled>Eliga un CNE</option>
+                    <option value=1>Compraventa</option>
+                    <option value=2>Regularización de Patrimonio</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="input3">Comuna / Manzana / Predio</label>
+                <input type="text" class="form-control" id="comunaInput">
+            </div>
+            <div class="form-group">
+                <label for="input4">Enajenantes</label>
+                <input type="text" class="form-control" id="input4">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="input5">Fojas</label>
+                <input type="number" class="form-control" id="fojasInput">
+            </div>
+            <div class="form-group">
+                <label for="fechaInput">Fecha Inscripción</label>
+                <input type="date" class="form-control" id="fechaInput" >
+            </div>
+            <div class="form-group">
+                <label for="nInscripcionInput">Número Inscripción</label>
+                <input type="number" class="form-control" id="nInscripcionInput">
+            </div>
+            <div class="form-group">
+                <label for="input8">Adquirentes</label>
+                <input type="text" class="form-control" id="input8" name="input8">
+            </div>
+        </div>
+
+    </div>
+    <button type="submit" style=" margin-top: 4rem; text-align:center;">Enviar</button>
+</div>
+
+

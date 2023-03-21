@@ -1,0 +1,75 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Inscripciones";
+}
+
+<h2>Inscripciones</h2>
+
+<table class="table" style="margin-top:4rem;">
+    <tr>
+        <th>
+            Comuna
+        </th>
+        <th>
+            RUN/RUT
+        </th>
+        <th>
+            % Derechos
+        </th>
+        <th>
+            Fojas
+        </th>
+        <th>
+            Año Inscripción
+        </th>
+        <th>
+            N° Inscripción
+        </th>
+        <th>
+            Fecha Inscripción
+        </th>
+        <th>
+            Año Vigencia Inicial
+        </th>
+        <th>
+            Año Vigencia Final
+        </th>
+        <th></th>
+    </tr>
+
+    @for(int i = 0; i<4; i++)
+    {
+        <tr>
+            <td>
+                Las Condes
+            </td>
+            <td>
+                20078823-8
+            </td>
+            <td>
+                @(i*5)
+            </td>
+            <td>
+                123
+            </td>
+            <td>
+                1999
+            </td>
+            <td>
+                @i
+            </td>
+            <td>
+                1999
+            </td>
+            <td>
+                1999
+            </td>
+            <td>
+                1999
+            </td>
+        </tr>
+    }
+
+</table>
+
