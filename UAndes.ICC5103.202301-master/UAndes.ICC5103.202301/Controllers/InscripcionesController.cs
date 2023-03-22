@@ -17,6 +17,7 @@ namespace UAndes.ICC5103._202301.Controllers
             return View();
         }
 
+        // GET: NuevaInscripcion
         public ActionResult NuevaInscripcion()
         {
             return View();
