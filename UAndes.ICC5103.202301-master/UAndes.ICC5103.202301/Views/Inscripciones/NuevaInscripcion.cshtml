@@ -23,8 +23,19 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="input3">Comuna / Manzana / Predio</label>
-                <input type="text" class="form-control" id="comunaInput">
+                <label for="comunaSelect">Comuna</label>
+                <select class="form-control" id="comunaSelect">
+                    <option value=0 selected disabled>Eliga una Comuna</option>
+                    <option value=1>Las Condes</option>
+                    <option value=2>La Reina</option>
+                    <option value=3>La Florida</option>
+                </select>
+
+                <label for="manzanaInput">Manzana</label>
+                <input type="number" class="form-control" id="manzanaInput">
+
+                <label for="predioInput">Predio</label>
+                <input type="number" class="form-control" id="predioInput">
             </div>
             <div class="form-group">
                 <label for="input4">Enajenantes</label>
