@@ -37,10 +37,7 @@
                 <label for="predioInput">Predio</label>
                 <input type="number" class="form-control" id="predioInput">
             </div>
-            <div class="form-group">
-                <label for="input4">Enajenantes</label>
-                <input type="text" class="form-control" id="input4">
-            </div>
+
         </div>
         <div class="col-md-6">
             <div class="form-group">
@@ -49,20 +46,106 @@
             </div>
             <div class="form-group">
                 <label for="fechaInput">Fecha Inscripción</label>
-                <input type="date" class="form-control" id="fechaInput" >
+                <input type="date" class="form-control" id="fechaInput">
             </div>
             <div class="form-group">
                 <label for="nInscripcionInput">Número Inscripción</label>
                 <input type="number" class="form-control" id="nInscripcionInput">
             </div>
-            <div class="form-group">
-                <label for="input8">Adquirentes</label>
-                <input type="text" class="form-control" id="input8" name="input8">
-            </div>
         </div>
 
     </div>
-    <button type="submit" style=" margin-top: 4rem; text-align:center;">Enviar</button>
-</div>
+
+    <div class="col-md-10">
+        <h4 style=" font-weight: bold; text-align: center; margin-bottom:2rem;">Enajenantes</h4>
+        <div class="add-enajenantes">
+            <div class="form-inline add-enajenantes">
+                <div class="form-group">
+                    <input type="text" placeholder="RUT" />
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Nombre" />
+                </div>
+                <div class="form-group">
+                    <input type="number" placeholder="% Derechos" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">% Derechos No Acreditados</label>
+                    <input type="checkbox" />
+                </div>
+                <div class="form-group">
+                    <button>+ Agregar Enajenante</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table" style="margin-top: 7rem">
+        <thead>
+            <th>
+                RUT
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+                % Derechos
+            </th>
+            <th>
+                Derechos NA
+            </th>
+
+        </thead>
+
+    </table>
+
+    <div class="col-md-10" style="margin-top:3rem;">
+        <h4 style=" font-weight: bold; text-align: center; margin-bottom:2rem;">Adquirientes</h4>
+        <div class="add-adquirentes">
+            <div class="form-inline add-adquirentes">
+                <div class="form-group">
+                    <input type="text" placeholder="RUT" />
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Nombre" />
+                </div>
+                <div class="form-group">
+                    <input type="number" placeholder="% Derechos" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">% Derechos No Acreditados</label>
+                    <input type="checkbox" />
+                </div>
+                <div class="form-group">
+                    <button>+ Agregar Adquiriente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table" style="margin-top: 12rem ">
+        <thead>    
+            <th>
+                RUT
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+                % Derechos
+            </th>
+            <th>
+                Derechos NA
+            </th>
+
+        </thead>
+
+
+    </table>
+
+    <div style="margin-top:5rem; display:flex; justify-content: center;">
+        <button type="submit" style=" margin-top: 4rem; text-align:center;">Enviar</button>
+    </div>
+
+
 
 
