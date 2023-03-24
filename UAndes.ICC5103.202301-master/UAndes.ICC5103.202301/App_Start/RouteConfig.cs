@@ -16,7 +16,7 @@ namespace UAndes.ICC5103._202301
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Personas", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Inscripcions", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

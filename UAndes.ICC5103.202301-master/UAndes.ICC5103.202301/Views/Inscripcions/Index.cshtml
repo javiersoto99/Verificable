@@ -1,0 +1,57 @@
+﻿@model IEnumerable<UAndes.ICC5103._202301.Models.Inscripcion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Numero_atencion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fojas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Creacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rol.Id)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Numero_atencion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cne)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fojas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Creacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rol.Id)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

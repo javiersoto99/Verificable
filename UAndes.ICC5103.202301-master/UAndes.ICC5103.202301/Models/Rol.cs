@@ -12,27 +12,23 @@ namespace UAndes.ICC5103._202301.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Persona
+    public partial class Rol
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Persona()
+        public Rol()
         {
-            this.Adquirente = new HashSet<Adquirente>();
-            this.Enajenante = new HashSet<Enajenante>();
+            this.Inscripcion = new HashSet<Inscripcion>();
             this.Multipropietario = new HashSet<Multipropietario>();
         }
     
         public int Id { get; set; }
-        public string Rut { get; set; }
-        public string Nombre { get; set; }
-        public System.DateTime FechaNacimiento { get; set; }
-        public string Email { get; set; }
-        public string Dirección { get; set; }
+        public int Fk_comuna { get; set; }
+        public int Manzana { get; set; }
+        public int Predio { get; set; }
     
+        public virtual Comuna Comuna { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Adquirente> Adquirente { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Enajenante> Enajenante { get; set; }
+        public virtual ICollection<Inscripcion> Inscripcion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Multipropietario> Multipropietario { get; set; }
     }

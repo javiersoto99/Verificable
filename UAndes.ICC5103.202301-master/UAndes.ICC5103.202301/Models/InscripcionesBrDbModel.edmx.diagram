@@ -6,6 +6,21 @@
     <edmx:Diagrams>
       <Diagram DiagramId="cf04ce5cfbcf4ae99a8d87d1f0dd710a" Name="Diagram1">
         <EntityTypeShape EntityType="InscripcionesBrDbModel.Persona" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Adquirente" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Comuna" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Enajenante" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Inscripcion" Width="1.5" PointX="5.25" PointY="6.125" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Multipropietario" Width="1.5" PointX="7.5" PointY="3.25" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Rol" Width="1.5" PointX="3" PointY="11.375" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Adquirent__Fk_pe__38996AB5" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Rol__Fk_comuna__403A8C7D" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Enajenant__Fk_pe__3B75D760" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Inscripci__Fk_ro__4316F928" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Multiprop__Fk_nu__4F7CD00D" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Multiprop__Fk_pe__4E88ABD4" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Multiprop__Fk_ro__4D94879B" />
+        <AssociationConnector Association="InscripcionesBrDbModel.Inscripcion_Adquirente" />
+        <AssociationConnector Association="InscripcionesBrDbModel.Inscripcion_Enajenante" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

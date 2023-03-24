@@ -131,9 +131,22 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InscripcionesController.cs" />
+    <Compile Include="Controllers\InscripcionsController.cs" />
     <Compile Include="Controllers\PersonasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Adquirente.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Comuna.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Enajenante.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Inscripcion.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\InscripcionesBrDbModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -150,7 +163,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InscripcionesBrDbModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Multipropietario.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Persona.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rol.cs">
       <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -218,6 +237,11 @@
     <Content Include="Views\Inscripciones\Inscripciones.cshtml" />
     <Content Include="Views\Inscripciones\NuevaInscripcion.cshtml" />
     <Content Include="Views\Inscripciones\BuscarInscripcion.cshtml" />
+    <Content Include="Views\Inscripcions\Create.cshtml" />
+    <Content Include="Views\Inscripcions\Delete.cshtml" />
+    <Content Include="Views\Inscripcions\Details.cshtml" />
+    <Content Include="Views\Inscripcions\Edit.cshtml" />
+    <Content Include="Views\Inscripcions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

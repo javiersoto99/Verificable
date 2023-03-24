@@ -1,0 +1,58 @@
+﻿@model UAndes.ICC5103._202301.Models.Inscripcion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Inscripcion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero_atencion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Numero_atencion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fojas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fojas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Creacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Creacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rol.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rol.Id)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
