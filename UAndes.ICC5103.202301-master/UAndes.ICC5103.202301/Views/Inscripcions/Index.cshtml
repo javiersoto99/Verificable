@@ -4,52 +4,54 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Inscripciones</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("+ Nueva Inscripción", "Create")
 </p>
 <table class="table">
-    <tr>
+    <thead>
         <th>
-            @Html.DisplayNameFor(model => model.Numero_atencion)
+            N° Inscripción
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Cne)
+            Fecha Inscripción
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Fojas)
+            Fojas
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Creacion)
+            N° Atención
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Rol.Id)
+            Rol
         </th>
-        <th></th>
-    </tr>
+        <th>
+            Acciones
+        </th>
+    </thead>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Numero_atencion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cne)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fojas)
+            @Html.DisplayFor(modelItem => item.Id)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Creacion)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Fojas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Numero_atencion)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Rol.Id)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <button>@Html.ActionLink("Ver", "Details", new { id = item.Id })</button>
+            <button>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id })</button>
+            
         </td>
     </tr>
 }

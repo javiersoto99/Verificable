@@ -17,12 +17,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Proyecto Bienes Raíces", "Inscripciones", "Inscripciones", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Proyecto Bienes Raíces", "Index", "Inscripcions", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("+ Nueva Inscripcion", "NuevaInscripcion", "Inscripciones")</li>
-                    <li>@Html.ActionLink("Inscripciones", "Inscripciones", "Inscripciones")</li>
+                    <li>@Html.ActionLink("Inscripciones", "Index", "Inscripcions")</li>
                     <li>@Html.ActionLink("Búsqueda", "BuscarInscripcion", "Inscripciones")</li>
                 </ul>
             </div>
