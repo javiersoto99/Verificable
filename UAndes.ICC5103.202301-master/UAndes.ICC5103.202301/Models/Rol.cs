@@ -18,7 +18,6 @@ namespace UAndes.ICC5103._202301.Models
         public Rol()
         {
             this.Inscripcion = new HashSet<Inscripcion>();
-            this.Multipropietario = new HashSet<Multipropietario>();
         }
     
         public int Id { get; set; }
@@ -29,7 +28,5 @@ namespace UAndes.ICC5103._202301.Models
         public virtual Comuna Comuna { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inscripcion> Inscripcion { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Multipropietario> Multipropietario { get; set; }
     }
 }

@@ -25,7 +25,6 @@ namespace UAndes.ICC5103._202301.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Persona> Persona { get; set; }
         public virtual DbSet<Adquirente> Adquirente { get; set; }
         public virtual DbSet<Comuna> Comuna { get; set; }
         public virtual DbSet<Enajenante> Enajenante { get; set; }

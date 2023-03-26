@@ -4,27 +4,90 @@ GO
 USE [InscripcionesBrDb]
 GO
 
-CREATE TABLE [dbo].[Persona](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Rut] [nvarchar](10) NULL,
-	[Nombre] [nvarchar](50) NOT NULL,
-	[FechaNacimiento] [date] NOT NULL,
-	[Email] [nchar](50) NOT NULL,
-	[Dirección] [nchar](50) NULL,
- CONSTRAINT [PK_Persona] PRIMARY KEY CLUSTERED(
-	[Id] ASC
-))
+
+CREATE TABLE [dbo].[Adquirente](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Rut] [varchar](12) NOT NULL,
+    [Nombre] [varchar](50) NOT NULL,
+    [Porcentaje] [float],
+    [Porcentaje_Na] [int] NOT NULL,
+    CONSTRAINT [PK_Adquirente] PRIMARY KEY CLUSTERED ([Id] ASC)
+)
+GO
+
+CREATE TABLE [dbo].[Enajenante](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Rut] [varchar](12) NOT NULL,
+    [Nombre] [varchar](50) NOT NULL,
+    [Porcentaje] [float],
+    [Porcentaje_Na] [int] NOT NULL,
+    CONSTRAINT [PK_Enajenante] PRIMARY KEY CLUSTERED ([Id] ASC)
+)
 GO
 
 
-USE [InscripcionesBrDb]
+CREATE TABLE [dbo].[Comuna](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Nombre] [varchar](50) NOT NULL,
+    CONSTRAINT [PK_Comuna] PRIMARY KEY CLUSTERED ([Id] ASC)
+)
+
+
+CREATE TABLE [dbo].[Rol](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Fk_comuna] [int] NOT NULL,
+    [Manzana] [int] NOT NULL,
+    [Predio] [int] NOT NULL,
+    CONSTRAINT [PK_Rol] PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY (Fk_comuna) REFERENCES Comuna(Id)
+)
 GO
-SET IDENTITY_INSERT [dbo].[Persona] ON 
+
+
+CREATE TABLE [dbo].[Inscripcion](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Numero_atencion] [int] NOT NULL,
+    [Cne] [int] NOT NULL,
+    [Fojas] [int] NOT NULL,
+    [Creacion] [date] NOT NULL,
+    [Fk_rol] [int] NOT NULL,
+    CONSTRAINT [PK_Inscripcion] PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY (Fk_rol) REFERENCES Rol(Id)
+)
 GO
-INSERT [dbo].[Persona] ([Id], [Rut], [Nombre], [FechaNacimiento], [Email], [Dirección]) VALUES (1, N'10915348-6', N'Mario Abellan', CAST(N'1982-01-15' AS Date), N'marioabellan@gmail.com                            ', N'Galvarino Gallardo 1534                           ')
+
+
+CREATE TABLE [dbo].[Inscripcion_Adquirente](
+    [Fk_inscripcion] [int] NOT NULL,
+    [Fk_adquirente] [int] NOT NULL,
+    PRIMARY KEY (Fk_inscripcion, Fk_adquirente),
+    FOREIGN KEY (Fk_inscripcion) REFERENCES Inscripcion(Id),
+    FOREIGN KEY (Fk_adquirente) REFERENCES Adquirente(Id)
+)
 GO
-SET IDENTITY_INSERT [dbo].[Persona] OFF
+
+
+CREATE TABLE [dbo].[Inscripcion_Enajenante](
+    [Fk_inscripcion] [int] NOT NULL,
+    [Fk_enajenante] [int] NOT NULL,
+    PRIMARY KEY (Fk_inscripcion, Fk_enajenante),
+    FOREIGN KEY (Fk_inscripcion) REFERENCES Inscripcion(Id),
+    FOREIGN KEY (Fk_enajenante) REFERENCES Enajenante(Id)
+)
+
+
+CREATE TABLE [dbo].[Multipropietario](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Fojas] [int] NOT NULL,
+    [Ano_inscripcion] [int] NOT NULL,
+    [Fk_numero_inscripcion] [int] NOT NULL,
+    [Vigencia_inicial] [int] NOT NULL,
+    [Vigencia_final] [int],
+    CONSTRAINT [PK_Multipropietario] PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY (Fk_numero_inscripcion) REFERENCES Inscripcion(Id)
+)
 GO
+
 
 
 

@@ -132,7 +132,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InscripcionesController.cs" />
     <Compile Include="Controllers\InscripcionsController.cs" />
-    <Compile Include="Controllers\PersonasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -164,9 +163,6 @@
       <DependentUpon>InscripcionesBrDbModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Multipropietario.cs">
-      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Persona.cs">
       <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Rol.cs">
@@ -229,11 +225,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Personas\Create.cshtml" />
-    <Content Include="Views\Personas\Delete.cshtml" />
-    <Content Include="Views\Personas\Details.cshtml" />
-    <Content Include="Views\Personas\Edit.cshtml" />
-    <Content Include="Views\Personas\Index.cshtml" />
     <Content Include="Views\Inscripciones\Inscripciones.cshtml" />
     <Content Include="Views\Inscripciones\NuevaInscripcion.cshtml" />
     <Content Include="Views\Inscripciones\BuscarInscripcion.cshtml" />
