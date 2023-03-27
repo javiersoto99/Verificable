@@ -1,13 +1,13 @@
 ﻿@model UAndes.ICC5103._202301.Models.Inscripcion
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalle";
 }
 
-<h2>Details</h2>
+<h2>Detalle</h2>
 
 <div>
-    <h4>Inscripcion</h4>
+    <h4>Inscripcion N° @Model.Id</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -51,8 +51,106 @@
         </dd>
 
     </dl>
+
+    <h3>Enajenantes</h3>
+    <table class="table" style="margin-top:2rem">
+        <thead>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Rut
+        </th>
+        <th>
+            Porcentaje
+        </th>
+        <th>
+            Derecho No Acreditado
+        </th>
+        </thead>
+        <tbody>
+            @foreach (var enajenante in Model.Enajenante)
+            {
+                <tr>
+                    <td>@enajenante.Nombre</td>
+                    <td>@enajenante.Rut</td>
+                    @if (enajenante.Porcentaje_Na != 0)
+                    {
+                        <td> - </td>
+                    }
+                    else
+                    {
+                        <td>@enajenante.Porcentaje</td>
+                    }
+
+                    @if (enajenante.Porcentaje_Na != 0)
+                    {
+                        <td>Si</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                </tr>
+
+
+
+
+            }
+        </tbody>
+    </table>
+
+
+    <h3>Adquirentes</h3>
+    <table class="table" style="margin-top:2rem">
+        <thead>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Rut
+        </th>
+        <th>
+            Porcentaje
+        </th>
+        <th>
+            Derecho No Acreditado
+        </th>
+        </thead>
+        <tbody>
+            @foreach (var adquirente in Model.Adquirente)
+            {
+                <tr>
+                    <td>@adquirente.Nombre</td>
+                    <td>@adquirente.Rut</td>
+                    @if (adquirente.Porcentaje_Na != 0)
+                    {
+                        <td> - </td>
+                    }
+                    else
+                    {
+                        <td>@adquirente.Porcentaje</td>
+                    }
+
+                    @if (adquirente.Porcentaje_Na != 0)
+                    {
+                        <td>Si</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                </tr>
+
+
+
+
+            }
+        </tbody>
+    </table>
+
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Volver a Lista de Inscripciones", "Index")
 </p>

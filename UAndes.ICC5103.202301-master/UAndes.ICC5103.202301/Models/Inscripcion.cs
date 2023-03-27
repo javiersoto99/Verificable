@@ -24,7 +24,7 @@ namespace UAndes.ICC5103._202301.Models
     
         public int Id { get; set; }
         public int Numero_atencion { get; set; }
-        public int Cne { get; set; }
+        public string Cne { get; set; }
         public int Fojas { get; set; }
         public System.DateTime Creacion { get; set; }
         public int Fk_rol { get; set; }

@@ -47,7 +47,7 @@ GO
 CREATE TABLE [dbo].[Inscripcion](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Numero_atencion] [int] NOT NULL,
-    [Cne] [int] NOT NULL,
+    [Cne] [varchar](50) NOT NULL,
     [Fojas] [int] NOT NULL,
     [Creacion] [date] NOT NULL,
     [Fk_rol] [int] NOT NULL,
