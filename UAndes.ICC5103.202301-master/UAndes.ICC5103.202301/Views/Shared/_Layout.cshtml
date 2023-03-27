@@ -21,7 +21,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("+ Nueva Inscripcion", "NuevaInscripcion", "Inscripciones")</li>
+                    <li>@Html.ActionLink("+ Nueva Inscripcion", "Create", "Inscripcions")</li>
                     <li>@Html.ActionLink("Inscripciones", "Index", "Inscripcions")</li>
                     <li>@Html.ActionLink("Búsqueda", "BuscarInscripcion", "Inscripciones")</li>
                 </ul>
@@ -36,5 +36,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

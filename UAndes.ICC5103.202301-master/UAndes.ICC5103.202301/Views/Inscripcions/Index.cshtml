@@ -49,8 +49,8 @@
             @Html.DisplayFor(modelItem => item.Rol.Id)
         </td>
         <td>
-            <button>@Html.ActionLink("Ver", "Details", new { id = item.Id })</button>
-            <button>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id })</button>
+            <button class="btn btn-default">@Html.ActionLink("Ver", "Details", new { id = item.Id })</button>
+            <button class="btn btn-danger">@Html.ActionLink("Eliminar", "Delete", new { id = item.Id })</button>
             
         </td>
     </tr>

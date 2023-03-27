@@ -48,10 +48,19 @@ namespace UAndes.ICC5103._202301.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Numero_atencion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion)
+        public ActionResult Create([Bind(Include = "Id,Numero_atencion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion, List<Enajenante> enajenantes, List<Adquirente> adquirentes)
         {
             if (ModelState.IsValid)
             {
+                foreach(var enajenante in enajenantes)
+                {
+                    inscripcion.Enajenante.Add(enajenante);
+                }
+                foreach (var adquirente in adquirentes)
+                {
+                    inscripcion.Adquirente.Add(adquirente);
+                }
+
                 db.Inscripcion.Add(inscripcion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
