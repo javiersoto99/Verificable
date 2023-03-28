@@ -106,7 +106,7 @@ INSERT [dbo].[Comuna] ([Nombre]) VALUES ('Las Condes')
 
 INSERT [dbo].[Rol] ([Fk_comuna], [Manzana], [Predio]) VALUES (1, 12, 13)
 
-INSERT [dbo].[Inscripcion] ([Numero_atencion], [Cne], [Fojas], [Creacion], [Fk_rol]) VALUES (1, 0, 0, '2019-01-01', 1)
+INSERT [dbo].[Inscripcion] ([Numero_atencion], [Cne], [Fojas], [Creacion], [Fk_rol]) VALUES (1, 'Compraventa', 0, '2019-01-01', 1)
 
 INSERT [dbo].[Inscripcion_Adquirente] ([Fk_inscripcion], [Fk_adquirente]) VALUES (1, 1)
 INSERT [dbo].[Inscripcion_Adquirente] ([Fk_inscripcion], [Fk_adquirente]) VALUES (1, 2)
@@ -124,7 +124,7 @@ INSERT [dbo].[Comuna] ([Nombre]) VALUES ('Vitacura')
 
 INSERT [dbo].[Rol] ([Fk_comuna], [Manzana], [Predio]) VALUES (2, 10, 20)
 
-INSERT [dbo].[Inscripcion] ([Numero_atencion], [Cne], [Fojas], [Creacion], [Fk_rol]) VALUES (2, 0, 0, '2020-01-01', 2)
+INSERT [dbo].[Inscripcion] ([Numero_atencion], [Cne], [Fojas], [Creacion], [Fk_rol]) VALUES (2, 'Regularización de Patrimonio', 0, '2020-01-01', 2)
 
 INSERT [dbo].[Inscripcion_Adquirente] ([Fk_inscripcion], [Fk_adquirente]) VALUES (2, 4)
 

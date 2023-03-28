@@ -54,10 +54,12 @@ namespace UAndes.ICC5103._202301.Controllers
             {
                 foreach(var enajenante in enajenantes)
                 {
+                    db.Enajenante.Add(enajenante);
                     inscripcion.Enajenante.Add(enajenante);
                 }
                 foreach (var adquirente in adquirentes)
                 {
+                    db.Adquirente.Add(adquirente);
                     inscripcion.Adquirente.Add(adquirente);
                 }
 
