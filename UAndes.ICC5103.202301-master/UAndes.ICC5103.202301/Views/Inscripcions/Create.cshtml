@@ -1,6 +1,7 @@
 ﻿@model UAndes.ICC5103._202301.Models.Inscripcion
 
 
+
 <h2>Nueva Inscripción</h2>
 
 @using (Html.BeginForm())
@@ -133,6 +134,8 @@
             nombreCell.innerHTML = document.getElementsByName("enajenanteNombre")[0].value;
             porcentajeCell.innerHTML = document.getElementsByName("enajenantePorcentaje")[0].value + "%";
             deleteCell.innerHTML = "<button type='button' class='btn btn-danger' onclick='deleteRow(this)'>Eliminar</button>";
+
+
         }
 
         function addAdquirente() {
@@ -146,6 +149,7 @@
             nombreCell.innerHTML = document.getElementsByName("adquirenteNombre")[0].value;
             porcentajeCell.innerHTML = document.getElementsByName("adquirentePorcentaje")[0].value + "%";
             deleteCell.innerHTML = "<button type='button' class='btn btn-danger' onclick='deleteRow(this)'>Eliminar</button>";
+
         }
 
         function deleteRow(button) {

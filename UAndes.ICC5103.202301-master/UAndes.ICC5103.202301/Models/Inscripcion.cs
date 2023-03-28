@@ -11,7 +11,8 @@ namespace UAndes.ICC5103._202301.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Inscripcion
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,10 +24,14 @@ namespace UAndes.ICC5103._202301.Models
         }
     
         public int Id { get; set; }
+        [Display(Name = "Número de Atención")]
         public int Numero_atencion { get; set; }
+        [Display(Name = "Código de Naturaleza de la Escritura")]
         public string Cne { get; set; }
         public int Fojas { get; set; }
+        [Display(Name = "Fecha de Creación")]
         public System.DateTime Creacion { get; set; }
+        [Display(Name = "ID Rol Asociado (temporal)")]
         public int Fk_rol { get; set; }
     
         public virtual Rol Rol { get; set; }

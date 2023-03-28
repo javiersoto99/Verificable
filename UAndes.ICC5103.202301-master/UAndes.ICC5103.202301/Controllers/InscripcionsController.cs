@@ -40,6 +40,8 @@ namespace UAndes.ICC5103._202301.Controllers
         public ActionResult Create()
         {
             ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id");
+            ViewBag.Enajenante = new Enajenante();
+
             return View();
         }
 
@@ -48,21 +50,10 @@ namespace UAndes.ICC5103._202301.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Numero_atencion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion, List<Enajenante> enajenantes, List<Adquirente> adquirentes)
+        public ActionResult Create(Inscripcion inscripcion)
         {
             if (ModelState.IsValid)
             {
-                foreach(var enajenante in enajenantes)
-                {
-                    db.Enajenante.Add(enajenante);
-                    inscripcion.Enajenante.Add(enajenante);
-                }
-                foreach (var adquirente in adquirentes)
-                {
-                    db.Adquirente.Add(adquirente);
-                    inscripcion.Adquirente.Add(adquirente);
-                }
-
                 db.Inscripcion.Add(inscripcion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -138,6 +129,12 @@ namespace UAndes.ICC5103._202301.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        // GET: Inscripcions/Create
+        public ActionResult Search()
+        {
+            ViewBag.Comunas = db.Comuna.ToList();
+            return View();
         }
     }
 }

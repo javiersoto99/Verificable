@@ -130,7 +130,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InscripcionesController.cs" />
     <Compile Include="Controllers\InscripcionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -225,14 +224,12 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Inscripciones\Inscripciones.cshtml" />
-    <Content Include="Views\Inscripciones\NuevaInscripcion.cshtml" />
-    <Content Include="Views\Inscripciones\BuscarInscripcion.cshtml" />
     <Content Include="Views\Inscripcions\Create.cshtml" />
     <Content Include="Views\Inscripcions\Delete.cshtml" />
     <Content Include="Views\Inscripcions\Details.cshtml" />
     <Content Include="Views\Inscripcions\Edit.cshtml" />
     <Content Include="Views\Inscripcions\Index.cshtml" />
+    <Content Include="Views\Inscripcions\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
