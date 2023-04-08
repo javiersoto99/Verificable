@@ -46,17 +46,53 @@ namespace UAndes.ICC5103._202301.Controllers
         }
 
         // POST: Inscripcions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inscripcion inscripcion)
         {
+            //Calcular Cantidad de Enajenantes
+            int cantidadEnajenantes = inscripcion.Enajenante.Count();
+
+            //Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
+            double sumaPorcentajeAdquirentes;
+            double sumaPorcentajeAdquirentesNA;
+            if (inscripcion.Adquirente.Sum(a => a.Porcentaje).HasValue)
+            {
+                sumaPorcentajeAdquirentes = inscripcion.Adquirente.Sum(a => a.Porcentaje).Value;
+                sumaPorcentajeAdquirentesNA = inscripcion.Adquirente.Where(a => a.Porcentaje_Na == 1).Sum(a => a.Porcentaje).Value;
+            }
+            else
+            {
+                sumaPorcentajeAdquirentes = 0;
+                sumaPorcentajeAdquirentesNA = 0;
+            }
+
+            //Validar el modelo
             if (ModelState.IsValid)
             {
-                db.Inscripcion.Add(inscripcion);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //Validar RdP
+                if (inscripcion.Cne == "Regularización de Patrimonio")
+                {
+                    //Condiciones de RdP
+                    if(cantidadEnajenantes == 0 && sumaPorcentajeAdquirentes <= 100 && sumaPorcentajeAdquirentesNA == 0)
+                    {
+                        db.Inscripcion.Add(inscripcion);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        //Error
+                    }
+                }
+                else //No validar el RdP
+                {
+                    db.Inscripcion.Add(inscripcion);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+                
             }
 
             ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
@@ -80,9 +116,6 @@ namespace UAndes.ICC5103._202301.Controllers
         }
 
         // POST: Inscripcions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Numero_atencion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion)
         {
