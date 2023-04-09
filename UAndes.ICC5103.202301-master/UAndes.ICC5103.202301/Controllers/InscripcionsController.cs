@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using UAndes.ICC5103._202301.Models;
@@ -33,6 +35,15 @@ namespace UAndes.ICC5103._202301.Controllers
             {
                 return HttpNotFound();
             }
+            var joinComunaRol = (from r in db.Rol
+                                 join c in db.Comuna on r.Fk_comuna equals c.Id
+                                 select new
+                                 {
+                                     Nombre = c.Nombre
+                                 }).FirstOrDefault();
+            ViewBag.Comuna = joinComunaRol.Nombre;
+            ViewBag.Manzana = db.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Manzana).FirstOrDefault();
+            ViewBag.Predio = db.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Predio).FirstOrDefault();
             return View(inscripcion);
         }
 
@@ -40,7 +51,7 @@ namespace UAndes.ICC5103._202301.Controllers
         public ActionResult Create()
         {
             ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id");
-            ViewBag.Enajenante = new Enajenante();
+            ViewBag.Comunas = db.Comuna.ToList();
 
             return View();
         }
@@ -48,55 +59,92 @@ namespace UAndes.ICC5103._202301.Controllers
         // POST: Inscripcions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Inscripcion inscripcion)
+        public ActionResult Create(Inscripcion inscripcion, int comuna, int manzana, int predio, FormCollection form)
         {
-            //Calcular Cantidad de Enajenantes
-            int cantidadEnajenantes = inscripcion.Enajenante.Count();
+            Rol rol = new Rol();
+            rol.Fk_comuna = comuna;
+            rol.Predio = predio;
+            rol.Manzana = manzana;
 
-            //Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
-            double sumaPorcentajeAdquirentes;
-            double sumaPorcentajeAdquirentesNA;
-            if (inscripcion.Adquirente.Sum(a => a.Porcentaje).HasValue)
+            db.Rol.Add(rol);
+
+            inscripcion.Fk_rol = rol.Id;
+
+
+            var enajenantesListJson = form["enajenantesList"];
+            var enajenantesList = JsonConvert.DeserializeObject<List<Enajenante>>(enajenantesListJson);
+
+            foreach(var enajenante in enajenantesList)
             {
-                sumaPorcentajeAdquirentes = inscripcion.Adquirente.Sum(a => a.Porcentaje).Value;
-                sumaPorcentajeAdquirentesNA = inscripcion.Adquirente.Where(a => a.Porcentaje_Na == 1).Sum(a => a.Porcentaje).Value;
-            }
-            else
-            {
-                sumaPorcentajeAdquirentes = 0;
-                sumaPorcentajeAdquirentesNA = 0;
+                db.Enajenante.Add(enajenante);
+                inscripcion.Enajenante.Add(enajenante);
             }
 
-            //Validar el modelo
+            var adquirentesListJson = form["adquirentesList"];
+            var adquirentesList = JsonConvert.DeserializeObject<List<Adquirente>>(adquirentesListJson);
+
+            foreach (var adquirente in adquirentesList)
+            {
+                db.Adquirente.Add(adquirente);
+                inscripcion.Adquirente.Add(adquirente);
+            }
+
             if (ModelState.IsValid)
             {
-                //Validar RdP
-                if (inscripcion.Cne == "Regularización de Patrimonio")
-                {
-                    //Condiciones de RdP
-                    if(cantidadEnajenantes == 0 && sumaPorcentajeAdquirentes <= 100 && sumaPorcentajeAdquirentesNA == 0)
-                    {
-                        db.Inscripcion.Add(inscripcion);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        //Error
-                    }
-                }
-                else //No validar el RdP
-                {
-                    db.Inscripcion.Add(inscripcion);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-
-                
+                db.Inscripcion.Add(inscripcion);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
             ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
             return View(inscripcion);
+
+            ////Calcular Cantidad de Enajenantes
+            //int cantidadEnajenantes = inscripcion.Enajenante.Count();
+
+            ////Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
+            //double sumaPorcentajeAdquirentes;
+            //double sumaPorcentajeAdquirentesNA;
+            //if (inscripcion.Adquirente.Sum(a => a.Porcentaje).HasValue)
+            //{
+            //    sumaPorcentajeAdquirentes = inscripcion.Adquirente.Sum(a => a.Porcentaje).Value;
+            //    sumaPorcentajeAdquirentesNA = inscripcion.Adquirente.Where(a => a.Porcentaje_Na == 1).Sum(a => a.Porcentaje).Value;
+            //}
+            //else
+            //{
+            //    sumaPorcentajeAdquirentes = 0;
+            //    sumaPorcentajeAdquirentesNA = 0;
+            //}
+
+            ////Validar el modelo
+            //if (ModelState.IsValid)
+            //{
+            //    //Validar RdP
+            //    if (inscripcion.Cne == "Regularización de Patrimonio")
+            //    {
+            //        //Condiciones de RdP
+            //        if(cantidadEnajenantes == 0 && sumaPorcentajeAdquirentes <= 100 && sumaPorcentajeAdquirentesNA == 0)
+            //        {
+            //            db.Inscripcion.Add(inscripcion);
+            //            db.SaveChanges();
+            //            return RedirectToAction("Index");
+            //        }
+            //        else
+            //        {
+            //            //Error
+                          //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //        }
+            //    }
+            //    else //No validar el RdP
+            //    {
+            //        db.Inscripcion.Add(inscripcion);
+            //        db.SaveChanges();
+            //        return RedirectToAction("Index");
+            //    }
+
+
+            //}
+
         }
 
         // GET: Inscripcions/Edit/5
@@ -141,6 +189,8 @@ namespace UAndes.ICC5103._202301.Controllers
             {
                 return HttpNotFound();
             }
+
+
             return View(inscripcion);
         }
 

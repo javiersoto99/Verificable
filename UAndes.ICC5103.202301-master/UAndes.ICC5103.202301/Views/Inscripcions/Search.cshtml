@@ -23,7 +23,7 @@
                         <option selected disabled>Seleccione una Comuna</option>
                         @foreach (var comuna in ViewBag.Comunas)
                         {
-                            <option value="@comuna.Id">@comuna.Nombre</option>
+                            <option value=@comuna.Id>@comuna.Nombre</option>
                         }
                     </select>
                 </div>

@@ -4,136 +4,155 @@
 
 <h2>Nueva Inscripción</h2>
 
-@using (Html.BeginForm())
-{
+<h4 style="margin-top:4rem; margin-bottom:4rem; ">Datos Inscripción</h4>
+
+
+<form method="post">
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4 style="margin-top:4rem;">Datos Inscripción</h4>
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(model => model.Numero_atencion,"Número de Atencion", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Numero_atencion, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Numero_atencion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Cne, "Código Naturaleza Escritura", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Cne, new List<SelectListItem>
-               {
-                 new SelectListItem { Text = "Compraventa", Value ="Compraventa"},
-                 new SelectListItem { Text = "Regularización de Patrimonio", Value = "Regularización de Patrimonio"}
-              }, "Selecione CNE",
-              new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Fojas, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Fojas, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Fojas, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Creacion, "Fecha Inscripción", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Creacion, "{0:MM/dd/yyyy}", new { @class = "form-control date", type = "date" })
-                @Html.ValidationMessageFor(model => model.Creacion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Fk_rol, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Fk_rol", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Fk_rol, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <h4>Enajenantes</h4>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-12">
-                <table class="table" id="enajenantesTable">
-                    <thead>
-                        <tr>
-                            <th>RUT</th>
-                            <th>Nombre</th>
-                            <th>Porcentaje</th>
-                            <th>Derechos NA</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input class="form-control" type="text" name="enajenanteRut" /></td>
-                            <td><input class="form-control" type="text" name="enajenanteNombre" /></td>
-                            <td><input class="form-control" type="number" step="0.01" min="0" max="100" name="enajenantePorcentaje" /></td>
-                            <td><input class="form-control" type="checkbox" name="derechosNA" /></td>
-                            <td><button type="button" class="btn btn-default" onclick="addEnajenante()">Agregar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <h4>Adquirentes</h4>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-12">
-                <table class="table" id="adquirentesTable">
-                    <thead>
-                        <tr>
-                            <th>RUT</th>
-                            <th>Nombre</th>
-                            <th>Porcentaje</th>
-                            <th>Derechos NA</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input class="form-control" type="text" name="adquirenteRut" /></td>
-                            <td><input class="form-control" type="text" name="adquirenteNombre" /></td>
-                            <td><input class="form-control" type="number" step="0.01" min="0" max="100" name="adquirentePorcentaje" /></td>
-                            <td><input class="form-control" type="checkbox" name="derechosNA" /></td>
-                            <td><button type="button" class="btn btn-default" onclick="addAdquirente()">Agregar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10" style=" display: flex; justify-content: center;">
-                <input type="submit" value="Crear Inscripción" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-
     <div>
-        @Html.ActionLink("Volver", "Index")
+        <label for="creacion">Fecha Inscripción:</label>
+        <input type="date" id="creacion" name="Creacion" />
     </div>
-}
+    <div>
+        <label for="numeroAtencion">Numero:</label>
+        <input type="text" id="numeroAtencion" name="Numero_atencion" />
+    </div>
+    <div>
+        <label for="fojas">Fojas:</label>
+        <input type="number" id="fojas" name="Fojas" />
+    </div>
+    <div>
+        <label for="cne">Código Naturaleza Escritura:</label>
+        <select id="cne" name="Cne">
+            <option value="Compraventa">Compraventa</option>
+            <option value="Regularización de Patrimonio">Regularización de Patrimonio</option>
+        </select>
+    </div>
+    <div>
+        <label for="comuna">Comuna:</label>
+        <select id="comuna" name="Comuna">
+            <option selected disabled>Seleccione una Comuna</option>
+            @foreach (var comuna in ViewBag.Comunas)
+            {
+                <option value=@comuna.Id>@comuna.Nombre</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="manzana">Manzana:</label>
+        <input type="number" id="manzana" name="Manzana" />
+    </div>
+    <div>
+        <label for="predio">Predio:</label>
+        <input type="number" id="predio" name="Predio" />
+    </div>
+    <h4 style="margin-top:4rem;">Enajenantes</h4>
+    <input type="hidden" id="enajenantesList" name="enajenantesList" />
+    <hr />
+    <div class="form-group">
+        <div class="col-md-12">
+            <table class="table" id="enajenantesTable">
+                <thead>
+                    <tr>
+                        <th>RUT</th>
+                        <th>Nombre</th>
+                        <th>Porcentaje</th>
+                        <th>Derechos NA</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input class="form-control" type="text" name="enajenanteRut" /></td>
+                        <td><input class="form-control" type="text" name="enajenanteNombre" /></td>
+                        <td><input class="form-control" type="number" step="0.01" min="0" max="100" name="enajenantePorcentaje" /></td>
+                        <td><input class="form-control" type="checkbox" name="derechosNA" /></td>
+                        <td><button type="button" class="btn btn-default" onclick="addEnajenante()">Agregar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h4>Adquirentes</h4>
+    <input type="hidden" id="adquirentesList" name="adquirentesList" />
+    <hr />
+    <div class="form-group">
+        <div class="col-md-12">
+            <table class="table" id="adquirentesTable">
+                <thead>
+                    <tr>
+                        <th>RUT</th>
+                        <th>Nombre</th>
+                        <th>Porcentaje</th>
+                        <th>Derechos NA</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input class="form-control" type="text" name="adquirenteRut" /></td>
+                        <td><input class="form-control" type="text" name="adquirenteNombre" /></td>
+                        <td><input class="form-control" type="number" step="0.01" min="0" max="100" name="adquirentePorcentaje" /></td>
+                        <td><input class="form-control" type="checkbox" name="adquirenteDerechosNA" /></td>
+                        <td><button type="button" class="btn btn-default" onclick="addAdquirente()">Agregar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <input type="submit" value="Guardar" />
+</form>
 
 @section scripts{
     <script>
+        var enajenantesList = [];
+        var adquirentesList = [];
+
         function addEnajenante() {
             var table = document.getElementById("enajenantesTable");
             var row = table.insertRow(-1);
             var rutCell = row.insertCell(0);
             var nombreCell = row.insertCell(1);
             var porcentajeCell = row.insertCell(2);
-            var deleteCell = row.insertCell(3);
-            rutCell.innerHTML = document.getElementsByName("enajenanteRut")[0].value;
-            nombreCell.innerHTML = document.getElementsByName("enajenanteNombre")[0].value;
-            porcentajeCell.innerHTML = document.getElementsByName("enajenantePorcentaje")[0].value + "%";
+            var porcentajeNACell = row.insertCell(3);
+            var deleteCell = row.insertCell(4);
+
+            var rutEnajenante = document.getElementsByName("enajenanteRut")[0].value;
+            var nombreEnajenante = document.getElementsByName("enajenanteNombre")[0].value;
+            var porcentajeEnajenante = document.getElementsByName("enajenantePorcentaje")[0].value;
+            var porcentajeNAEnajenante = document.getElementsByName("derechosNA")[0].checked;
+
+            if (porcentajeNAEnajenante == true) {
+                porcentajeNAEnajenante = 1;
+            }
+            else {
+                porcentajeNAEnajenante = 0;
+            }
+
+            rutCell.innerHTML = rutEnajenante;
+            nombreCell.innerHTML = nombreEnajenante;
+            porcentajeCell.innerHTML = porcentajeEnajenante + "%";
+            if (porcentajeNAEnajenante == 1) {
+                porcentajeNACell.innerHTML = "Si";
+            }
+            else {
+                porcentajeNACell.innerHTML = "No";
+            }
+
             deleteCell.innerHTML = "<button type='button' class='btn btn-danger' onclick='deleteRow(this)'>Eliminar</button>";
+
+            var enajenante = {
+                Rut: rutEnajenante,
+                Nombre: nombreEnajenante,
+                Porcentaje: porcentajeEnajenante,
+                Porcentaje_Na: porcentajeNAEnajenante
+            };
+
+            enajenantesList.push(enajenante);
+
+            document.getElementById("enajenantesList").value = JSON.stringify(enajenantesList);
 
 
         }
@@ -144,11 +163,43 @@
             var rutCell = row.insertCell(0);
             var nombreCell = row.insertCell(1);
             var porcentajeCell = row.insertCell(2);
-            var deleteCell = row.insertCell(3);
-            rutCell.innerHTML = document.getElementsByName("adquirenteRut")[0].value;
-            nombreCell.innerHTML = document.getElementsByName("adquirenteNombre")[0].value;
-            porcentajeCell.innerHTML = document.getElementsByName("adquirentePorcentaje")[0].value + "%";
+            var porcentajeNACell = row.insertCell(3);
+            var deleteCell = row.insertCell(4);
+
+
+            var rutAdquirente = document.getElementsByName("adquirenteRut")[0].value;
+            var nombreAdquirente = document.getElementsByName("adquirenteNombre")[0].value;
+            var porcentajeAdquirente= document.getElementsByName("adquirentePorcentaje")[0].value;
+            var porcentajeNAAdquirente = document.getElementsByName("adquirenteDerechosNA")[0].checked;
+
+            if (porcentajeNAAdquirente == true) {
+                porcentajeNAAdquirente = 1;
+            }
+            else {
+                porcentajeNAAdquirente = 0;
+            }
+
+            rutCell.innerHTML = rutAdquirente;
+            nombreCell.innerHTML = nombreAdquirente;
+            porcentajeCell.innerHTML = porcentajeAdquirente + "%";
+            if (porcentajeNAAdquirente == 1) {
+                porcentajeNACell.innerHTML = "Si";
+            }
+            else {
+                porcentajeNACell.innerHTML = "No";
+            }
             deleteCell.innerHTML = "<button type='button' class='btn btn-danger' onclick='deleteRow(this)'>Eliminar</button>";
+
+            var adquirente = {
+                Rut: rutAdquirente,
+                Nombre: nombreAdquirente,
+                Porcentaje: porcentajeAdquirente,
+                Porcentaje_Na: porcentajeNAAdquirente
+            };
+
+            adquirentesList.push(adquirente);
+
+            document.getElementById("adquirentesList").value = JSON.stringify(adquirentesList);
 
         }
 
@@ -158,3 +209,5 @@
         }
     </script>
 }
+
+   
