@@ -61,6 +61,8 @@ namespace UAndes.ICC5103._202301.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inscripcion inscripcion, int comuna, int manzana, int predio, FormCollection form)
         {
+
+            //Crear Rol y agregarlo a la Inscripción
             Rol rol = new Rol();
             rol.Fk_comuna = comuna;
             rol.Predio = predio;
@@ -71,12 +73,12 @@ namespace UAndes.ICC5103._202301.Controllers
             inscripcion.Fk_rol = rol.Id;
 
 
+            //Crear Enajenantes y Adquirentes y agregarlos a la Inscripción
             var enajenantesListJson = form["enajenantesList"];
             var enajenantesList = JsonConvert.DeserializeObject<List<Enajenante>>(enajenantesListJson);
 
             foreach(var enajenante in enajenantesList)
             {
-                db.Enajenante.Add(enajenante);
                 inscripcion.Enajenante.Add(enajenante);
             }
 
@@ -85,65 +87,79 @@ namespace UAndes.ICC5103._202301.Controllers
 
             foreach (var adquirente in adquirentesList)
             {
-                db.Adquirente.Add(adquirente);
                 inscripcion.Adquirente.Add(adquirente);
             }
 
+            //Calcular Cantidad de Enajenantes
+            int cantidadEnajenantes = inscripcion.Enajenante.Count();
+
+            //Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
+            double sumaPorcentajeAdquirentes;
+            double sumaPorcentajeAdquirentesNA;
+
+            if (inscripcion.Adquirente.Sum(a => a.Porcentaje).HasValue)
+            {
+                sumaPorcentajeAdquirentes = inscripcion.Adquirente.Sum(a => a.Porcentaje).Value;
+                sumaPorcentajeAdquirentesNA = inscripcion.Adquirente.Where(a => a.Porcentaje_Na == 1).Sum(a => a.Porcentaje).Value;
+            }
+            else
+            {
+                sumaPorcentajeAdquirentes = 0;
+                sumaPorcentajeAdquirentesNA = 0;
+            }
+
+            //Validar el modelo
             if (ModelState.IsValid)
             {
-                db.Inscripcion.Add(inscripcion);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //Validar RdP
+                if (inscripcion.Cne == "Regularización de Patrimonio")
+                {
+                    //Condiciones de RdP
+                    if (cantidadEnajenantes == 0 && sumaPorcentajeAdquirentes <= 100 && sumaPorcentajeAdquirentesNA == 0)
+                    {
+                        //Agregar Enajenantes, Adquirentes e Inscripción a la BBDD
+                        foreach (var enajenante in enajenantesList)
+                        {
+                            db.Enajenante.Add(enajenante);
+                        }
+
+                        foreach (var adquirente in adquirentesList)
+                        {
+                            db.Adquirente.Add(adquirente);
+                        }
+
+                        db.Inscripcion.Add(inscripcion);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        //Retornar Error
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                }
+                else //No validar el RdP
+                {
+                    //Agregar Enajenantes, Adquirentes e Inscripción a la BBDD
+                    foreach (var enajenante in enajenantesList)
+                    {
+                        db.Enajenante.Add(enajenante);
+                    }
+
+                    foreach (var adquirente in adquirentesList)
+                    {
+                        db.Adquirente.Add(adquirente);
+                    }
+                    db.Inscripcion.Add(inscripcion);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+
             }
 
             ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
             return View(inscripcion);
-
-            ////Calcular Cantidad de Enajenantes
-            //int cantidadEnajenantes = inscripcion.Enajenante.Count();
-
-            ////Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
-            //double sumaPorcentajeAdquirentes;
-            //double sumaPorcentajeAdquirentesNA;
-            //if (inscripcion.Adquirente.Sum(a => a.Porcentaje).HasValue)
-            //{
-            //    sumaPorcentajeAdquirentes = inscripcion.Adquirente.Sum(a => a.Porcentaje).Value;
-            //    sumaPorcentajeAdquirentesNA = inscripcion.Adquirente.Where(a => a.Porcentaje_Na == 1).Sum(a => a.Porcentaje).Value;
-            //}
-            //else
-            //{
-            //    sumaPorcentajeAdquirentes = 0;
-            //    sumaPorcentajeAdquirentesNA = 0;
-            //}
-
-            ////Validar el modelo
-            //if (ModelState.IsValid)
-            //{
-            //    //Validar RdP
-            //    if (inscripcion.Cne == "Regularización de Patrimonio")
-            //    {
-            //        //Condiciones de RdP
-            //        if(cantidadEnajenantes == 0 && sumaPorcentajeAdquirentes <= 100 && sumaPorcentajeAdquirentesNA == 0)
-            //        {
-            //            db.Inscripcion.Add(inscripcion);
-            //            db.SaveChanges();
-            //            return RedirectToAction("Index");
-            //        }
-            //        else
-            //        {
-            //            //Error
-                          //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //        }
-            //    }
-            //    else //No validar el RdP
-            //    {
-            //        db.Inscripcion.Add(inscripcion);
-            //        db.SaveChanges();
-            //        return RedirectToAction("Index");
-            //    }
-
-
-            //}
 
         }
 

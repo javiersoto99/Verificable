@@ -3,11 +3,12 @@
     "",
     "\\UAndes.ICC5103.202301-master",
     "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301",
+    "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301\\Controllers",
     "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301\\Models",
     "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301\\SQL",
     "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301\\Views",
     "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301\\Views\\Shared"
   ],
-  "SelectedNode": "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301\\SQL\\Database.sql",
+  "SelectedNode": "\\UAndes.ICC5103.202301-master\\UAndes.ICC5103.202301\\Controllers\\InscripcionsController.cs",
   "PreviewInSolutionExplorer": false
 }
