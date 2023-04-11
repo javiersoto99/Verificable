@@ -28,8 +28,8 @@ namespace UAndes.ICC5103._202301.Models
         public virtual DbSet<Adquirente> Adquirente { get; set; }
         public virtual DbSet<Comuna> Comuna { get; set; }
         public virtual DbSet<Enajenante> Enajenante { get; set; }
-        public virtual DbSet<Inscripcion> Inscripcion { get; set; }
         public virtual DbSet<Multipropietario> Multipropietario { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
+        public virtual DbSet<Inscripcion> Inscripcion { get; set; }
     }
 }

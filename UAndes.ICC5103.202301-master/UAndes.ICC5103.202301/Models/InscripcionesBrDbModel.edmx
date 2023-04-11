@@ -37,7 +37,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Numero_atencion" Type="int" Nullable="false" />
+          <Property Name="Numero_inscripcion" Type="int" Nullable="false" />
           <Property Name="Cne" Type="varchar" MaxLength="50" />
           <Property Name="Fojas" Type="int" Nullable="false" />
           <Property Name="Creacion" Type="date" Nullable="false" />
@@ -209,13 +209,13 @@
           <EntitySet Name="Adquirente" EntityType="InscripcionesBrDbModel.Adquirente" />
           <EntitySet Name="Comuna" EntityType="InscripcionesBrDbModel.Comuna" />
           <EntitySet Name="Enajenante" EntityType="InscripcionesBrDbModel.Enajenante" />
-          <EntitySet Name="Inscripcion" EntityType="InscripcionesBrDbModel.Inscripcion" />
           <EntitySet Name="Multipropietario" EntityType="InscripcionesBrDbModel.Multipropietario" />
           <EntitySet Name="Rol" EntityType="InscripcionesBrDbModel.Rol" />
           <AssociationSet Name="FK__Rol__Fk_comuna__3C69FB99" Association="InscripcionesBrDbModel.FK__Rol__Fk_comuna__3C69FB99">
             <End Role="Comuna" EntitySet="Comuna" />
             <End Role="Rol" EntitySet="Rol" />
           </AssociationSet>
+          <EntitySet Name="Inscripcion" EntityType="InscripcionesBrDbModel.Inscripcion" />
           <AssociationSet Name="FK__Inscripci__Fk_ro__3F466844" Association="InscripcionesBrDbModel.FK__Inscripci__Fk_ro__3F466844">
             <End Role="Rol" EntitySet="Rol" />
             <End Role="Inscripcion" EntitySet="Inscripcion" />
@@ -232,7 +232,7 @@
             <End Role="Enajenante" EntitySet="Enajenante" />
             <End Role="Inscripcion" EntitySet="Inscripcion" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Adquirente">
           <Key>
             <PropertyRef Name="Id" />
@@ -262,21 +262,6 @@
           <Property Name="Porcentaje" Type="Double" />
           <Property Name="Porcentaje_Na" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Inscripcion" Relationship="InscripcionesBrDbModel.Inscripcion_Enajenante" FromRole="Enajenante" ToRole="Inscripcion" />
-        </EntityType>
-        <EntityType Name="Inscripcion">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Numero_atencion" Type="Int32" Nullable="false" />
-          <Property Name="Cne" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Fojas" Type="Int32" Nullable="false" />
-          <Property Name="Creacion" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Fk_rol" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Rol" Relationship="InscripcionesBrDbModel.FK__Inscripci__Fk_ro__3F466844" FromRole="Inscripcion" ToRole="Rol" />
-          <NavigationProperty Name="Multipropietario" Relationship="InscripcionesBrDbModel.FK__Multiprop__Fk_nu__49C3F6B7" FromRole="Inscripcion" ToRole="Multipropietario" />
-          <NavigationProperty Name="Adquirente" Relationship="InscripcionesBrDbModel.Inscripcion_Adquirente" FromRole="Inscripcion" ToRole="Adquirente" />
-          <NavigationProperty Name="Enajenante" Relationship="InscripcionesBrDbModel.Inscripcion_Enajenante" FromRole="Inscripcion" ToRole="Enajenante" />
         </EntityType>
         <EntityType Name="Multipropietario">
           <Key>
@@ -313,6 +298,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Inscripcion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Numero_inscripcion" Type="Int32" Nullable="false" />
+          <Property Name="Cne" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fojas" Type="Int32" Nullable="false" />
+          <Property Name="Creacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Fk_rol" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="InscripcionesBrDbModel.FK__Inscripci__Fk_ro__3F466844" FromRole="Inscripcion" ToRole="Rol" />
+          <NavigationProperty Name="Multipropietario" Relationship="InscripcionesBrDbModel.FK__Multiprop__Fk_nu__49C3F6B7" FromRole="Inscripcion" ToRole="Multipropietario" />
+          <NavigationProperty Name="Adquirente" Relationship="InscripcionesBrDbModel.Inscripcion_Adquirente" FromRole="Inscripcion" ToRole="Adquirente" />
+          <NavigationProperty Name="Enajenante" Relationship="InscripcionesBrDbModel.Inscripcion_Enajenante" FromRole="Inscripcion" ToRole="Enajenante" />
+        </EntityType>
         <Association Name="FK__Inscripci__Fk_ro__3F466844">
           <End Type="InscripcionesBrDbModel.Rol" Role="Rol" Multiplicity="1" />
           <End Type="InscripcionesBrDbModel.Inscripcion" Role="Inscripcion" Multiplicity="*" />
@@ -381,18 +381,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Inscripcion">
-            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Inscripcion">
-              <MappingFragment StoreEntitySet="Inscripcion">
-                <ScalarProperty Name="Fk_rol" ColumnName="Fk_rol" />
-                <ScalarProperty Name="Creacion" ColumnName="Creacion" />
-                <ScalarProperty Name="Fojas" ColumnName="Fojas" />
-                <ScalarProperty Name="Cne" ColumnName="Cne" />
-                <ScalarProperty Name="Numero_atencion" ColumnName="Numero_atencion" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Multipropietario">
             <EntityTypeMapping TypeName="InscripcionesBrDbModel.Multipropietario">
               <MappingFragment StoreEntitySet="Multipropietario">
@@ -415,6 +403,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Inscripcion">
+            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Inscripcion">
+              <MappingFragment StoreEntitySet="Inscripcion">
+                <ScalarProperty Name="Fk_rol" ColumnName="Fk_rol" />
+                <ScalarProperty Name="Creacion" ColumnName="Creacion" />
+                <ScalarProperty Name="Fojas" ColumnName="Fojas" />
+                <ScalarProperty Name="Cne" ColumnName="Cne" />
+                <ScalarProperty Name="Numero_inscripcion" ColumnName="Numero_inscripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="Inscripcion_Adquirente" TypeName="InscripcionesBrDbModel.Inscripcion_Adquirente" StoreEntitySet="Inscripcion_Adquirente">
             <EndProperty Name="Inscripcion">
               <ScalarProperty Name="Id" ColumnName="Fk_inscripcion" />
@@ -431,7 +431,7 @@
               <ScalarProperty Name="Id" ColumnName="Fk_enajenante" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

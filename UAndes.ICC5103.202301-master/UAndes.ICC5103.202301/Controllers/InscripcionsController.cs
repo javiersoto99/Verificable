@@ -181,7 +181,7 @@ namespace UAndes.ICC5103._202301.Controllers
 
         // POST: Inscripcions/Edit/5
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Numero_atencion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion)
+        public ActionResult Edit([Bind(Include = "Id,Numero_inscripcion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion)
         {
             if (ModelState.IsValid)
             {
