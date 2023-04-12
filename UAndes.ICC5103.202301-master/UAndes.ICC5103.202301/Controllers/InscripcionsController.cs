@@ -129,6 +129,13 @@ namespace UAndes.ICC5103._202301.Controllers
                         }
 
                         db.Inscripcion.Add(inscripcion);
+                        //Falta: Multipropietario
+                        //Multipropietario multiPropietario = new Multipropietario();
+                        //multiPropietario.Fk_numero_inscripcion = inscripcion.Id;
+                        //multiPropietario.Ano_inscripcion = DateTime.Now.Year;
+                        //multiPropietario.Fojas = inscripcion.Fojas;
+                        
+
                         db.SaveChanges();
                         return RedirectToAction("Index");
                     }
@@ -229,11 +236,6 @@ namespace UAndes.ICC5103._202301.Controllers
             }
             base.Dispose(disposing);
         }
-        // GET: Inscripcions/Create
-        public ActionResult Search()
-        {
-            ViewBag.Comunas = db.Comuna.ToList();
-            return View();
-        }
+       
     }
 }
