@@ -1,0 +1,92 @@
+﻿@model IEnumerable<UAndes.ICC5103._202301.Models.Inscripcion>
+
+
+@{
+    ViewBag.Title = "Búsqueda Multipropietario";
+}
+
+<h2>Búsqueda</h2>
+
+
+<div class="container" style="margin-top:4rem;">
+
+
+    @using (Html.BeginForm("Search", "Multipropietario", FormMethod.Get))
+    {
+
+        @*<label for="anoMP">Año</label>
+            <input type="number" id="anoMP" />*@
+
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="comuna">Comuna</label>
+                    <select id="comuna" name="Comuna">
+                        <option selected disabled>Seleccione una Comuna</option>
+                        @foreach (var comuna in ViewBag.Comunas)
+                        {
+                            <option value=@comuna.Id>@comuna.Nombre</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="manzana">Manzana</label>
+                    <input type="number" id="manzana" name="Manzana" />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="predio">Predio</label>
+                    <input type="number" id="predio" name="Predio" />
+                </div>
+            </div>
+            <div>
+                <button type="submit" value="Guardar" class="btn btn-default" style="margin-top:2.6rem;">Buscar</button>
+            </div>
+        </div>
+    }
+
+
+</div>
+
+<div style="margin-top:3rem;">
+    <h3>Resultados:</h3>
+    <table class="table">
+        <thead>
+        <th>Rol</th>
+        <th>Rut</th>
+        <th>% Derechos</th>
+        <th>Año Inscripción</th>
+        <th>Número Inscripción</th>
+        <th>
+            Fecha Inscripción
+        </th>
+        <th>
+            Año Vigencia Inicial
+        </th>
+        <th>
+            Año Vigencia Final
+        </th>
+        </thead>
+        <tbody>
+            @foreach (var resultado in Model)
+            {
+                <tr>
+                    <td>@resultado.Fk_rol</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>@resultado.Creacion.Year</td>
+                    <td>@resultado.Numero_inscripcion</td>
+                    <td>@resultado.Creacion.Year</td>
+                    <td>@resultado.Creacion.Year</td>
+                    <td>@resultado.Creacion.Year</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+

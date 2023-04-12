@@ -23,27 +23,31 @@ namespace UAndes.ICC5103._202301.Controllers
             return View(inscripcion.ToList());
         }
 
-        // GET: Inscripcions/Details/5
+        // GET: Inscripcions/Details/id
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Inscripcion inscripcion = db.Inscripcion.Find(id);
+
             if (inscripcion == null)
             {
                 return HttpNotFound();
             }
-            var joinComunaRol = (from r in db.Rol
-                                 join c in db.Comuna on r.Fk_comuna equals c.Id
-                                 select new
-                                 {
-                                     Nombre = c.Nombre
-                                 }).FirstOrDefault();
+
+            var joinComunaRol = (from r in db.Rol join c in db.Comuna on r.Fk_comuna equals c.Id select new
+                    {
+                        Nombre = c.Nombre
+                    }
+                ).FirstOrDefault();
+
             ViewBag.Comuna = joinComunaRol.Nombre;
             ViewBag.Manzana = db.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Manzana).FirstOrDefault();
             ViewBag.Predio = db.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Predio).FirstOrDefault();
+
             return View(inscripcion);
         }
 
@@ -56,22 +60,29 @@ namespace UAndes.ICC5103._202301.Controllers
             return View();
         }
 
+        // Crear Rol
+        public Rol CreateRol(int comuna, int manzana, int predio)
+        {
+            Rol rol = new Rol();
+            rol.Fk_comuna = comuna;
+            rol.Manzana = manzana;
+            rol.Predio = predio;
+
+            return rol;
+        }
+
+        // TODO: Separar método en varios métodos más pequeños
         // POST: Inscripcions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inscripcion inscripcion, int comuna, int manzana, int predio, FormCollection form)
         {
 
-            //Crear Rol y agregarlo a la Inscripción
-            Rol rol = new Rol();
-            rol.Fk_comuna = comuna;
-            rol.Predio = predio;
-            rol.Manzana = manzana;
-
+            // Crear Rol y agregarlo a la Inscripción
+            Rol rol = CreateRol(comuna, manzana, predio);
             db.Rol.Add(rol);
 
             inscripcion.Fk_rol = rol.Id;
-
 
             //Crear Enajenantes y Adquirentes y agregarlos a la Inscripción
             var enajenantesListJson = form["enajenantesList"];
@@ -170,23 +181,27 @@ namespace UAndes.ICC5103._202301.Controllers
 
         }
 
-        // GET: Inscripcions/Edit/5
+        // GET: Inscripcions/Edit/id
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Inscripcion inscripcion = db.Inscripcion.Find(id);
+
             if (inscripcion == null)
             {
                 return HttpNotFound();
             }
+
             ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
+
             return View(inscripcion);
         }
 
-        // POST: Inscripcions/Edit/5
+        // POST: Inscripcions/Edit/id
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Numero_inscripcion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion)
         {
@@ -194,30 +209,34 @@ namespace UAndes.ICC5103._202301.Controllers
             {
                 db.Entry(inscripcion).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
+
             ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
+
             return View(inscripcion);
         }
 
-        // GET: Inscripcions/Delete/5
+        // GET: Inscripcions/Delete/id
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Inscripcion inscripcion = db.Inscripcion.Find(id);
+
             if (inscripcion == null)
             {
                 return HttpNotFound();
             }
 
-
             return View(inscripcion);
         }
 
-        // POST: Inscripcions/Delete/5
+        // POST: Inscripcions/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -225,6 +244,7 @@ namespace UAndes.ICC5103._202301.Controllers
             Inscripcion inscripcion = db.Inscripcion.Find(id);
             db.Inscripcion.Remove(inscripcion);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -236,6 +256,5 @@ namespace UAndes.ICC5103._202301.Controllers
             }
             base.Dispose(disposing);
         }
-       
     }
 }

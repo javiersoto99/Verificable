@@ -10,20 +10,24 @@ namespace UAndes.ICC5103._202301.Controllers
     public class MultipropietarioController : Controller
     {
         private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
+
+        // GET: Multipropietario
         public ActionResult Index()
         {
-            var inscripcion = db.Inscripcion.ToList();
             ViewBag.Comunas = db.Comuna.ToList();
+            var inscripcion = db.Inscripcion.ToList();
+
             return View(inscripcion);
         }
-        // GET: Multipropietario
+
+        // GET: Multipropietario / Search
         [HttpGet]
         public ActionResult Search(int comuna, int manzana, int predio)
         {
+            ViewBag.Comunas = db.Comuna.ToList();
+
             var idRolBusqueda = db.Rol.Where(r => r.Fk_comuna== comuna && r.Manzana == manzana && r.Predio == predio).Select(r => r.Id).FirstOrDefault();
-
             var resultado = db.Inscripcion.Where(i => i.Fk_rol == idRolBusqueda).ToList();
-
             //resultado = resultado.Where(i => i.Creacion.Year == anoMP).ToList();
 
             return View(resultado);
