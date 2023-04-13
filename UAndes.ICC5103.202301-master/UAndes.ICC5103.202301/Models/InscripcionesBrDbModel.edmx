@@ -64,9 +64,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fk_comuna" Type="int" Nullable="false" />
+          <Property Name="Manzana" Type="int" Nullable="false" />
+          <Property Name="Predio" Type="int" Nullable="false" />
+          <Property Name="Rut" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="Porcentaje_derechos" Type="float" />
           <Property Name="Fojas" Type="int" Nullable="false" />
           <Property Name="Ano_inscripcion" Type="int" Nullable="false" />
-          <Property Name="Fk_numero_inscripcion" Type="int" Nullable="false" />
+          <Property Name="Numero_inscripcion" Type="int" Nullable="false" />
+          <Property Name="Fecha_inscripcion" Type="date" Nullable="false" />
           <Property Name="Vigencia_inicial" Type="int" Nullable="false" />
           <Property Name="Vigencia_final" Type="int" />
         </EntityType>
@@ -139,15 +145,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Multiprop__Fk_nu__49C3F6B7">
-          <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="1" />
+        <Association Name="FK__Multiprop__Fk_co__5CD6CB2B">
+          <End Role="Comuna" Type="Self.Comuna" Multiplicity="1" />
           <End Role="Multipropietario" Type="Self.Multipropietario" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Inscripcion">
+            <Principal Role="Comuna">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Multipropietario">
-              <PropertyRef Name="Fk_numero_inscripcion" />
+              <PropertyRef Name="Fk_comuna" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -192,8 +198,8 @@
             <End Role="Rol" EntitySet="Rol" />
             <End Role="Inscripcion" EntitySet="Inscripcion" />
           </AssociationSet>
-          <AssociationSet Name="FK__Multiprop__Fk_nu__49C3F6B7" Association="Self.FK__Multiprop__Fk_nu__49C3F6B7">
-            <End Role="Inscripcion" EntitySet="Inscripcion" />
+          <AssociationSet Name="FK__Multiprop__Fk_co__5CD6CB2B" Association="Self.FK__Multiprop__Fk_co__5CD6CB2B">
+            <End Role="Comuna" EntitySet="Comuna" />
             <End Role="Multipropietario" EntitySet="Multipropietario" />
           </AssociationSet>
           <AssociationSet Name="FK__Rol__Fk_comuna__3C69FB99" Association="Self.FK__Rol__Fk_comuna__3C69FB99">
@@ -209,7 +215,6 @@
           <EntitySet Name="Adquirente" EntityType="InscripcionesBrDbModel.Adquirente" />
           <EntitySet Name="Comuna" EntityType="InscripcionesBrDbModel.Comuna" />
           <EntitySet Name="Enajenante" EntityType="InscripcionesBrDbModel.Enajenante" />
-          <EntitySet Name="Multipropietario" EntityType="InscripcionesBrDbModel.Multipropietario" />
           <EntitySet Name="Rol" EntityType="InscripcionesBrDbModel.Rol" />
           <AssociationSet Name="FK__Rol__Fk_comuna__3C69FB99" Association="InscripcionesBrDbModel.FK__Rol__Fk_comuna__3C69FB99">
             <End Role="Comuna" EntitySet="Comuna" />
@@ -220,10 +225,6 @@
             <End Role="Rol" EntitySet="Rol" />
             <End Role="Inscripcion" EntitySet="Inscripcion" />
           </AssociationSet>
-          <AssociationSet Name="FK__Multiprop__Fk_nu__49C3F6B7" Association="InscripcionesBrDbModel.FK__Multiprop__Fk_nu__49C3F6B7">
-            <End Role="Inscripcion" EntitySet="Inscripcion" />
-            <End Role="Multipropietario" EntitySet="Multipropietario" />
-          </AssociationSet>
           <AssociationSet Name="Inscripcion_Adquirente" Association="InscripcionesBrDbModel.Inscripcion_Adquirente">
             <End Role="Adquirente" EntitySet="Adquirente" />
             <End Role="Inscripcion" EntitySet="Inscripcion" />
@@ -231,6 +232,11 @@
           <AssociationSet Name="Inscripcion_Enajenante" Association="InscripcionesBrDbModel.Inscripcion_Enajenante">
             <End Role="Enajenante" EntitySet="Enajenante" />
             <End Role="Inscripcion" EntitySet="Inscripcion" />
+          </AssociationSet>
+          <EntitySet Name="Multipropietario" EntityType="InscripcionesBrDbModel.Multipropietario" />
+          <AssociationSet Name="FK__Multiprop__Fk_co__5CD6CB2B" Association="InscripcionesBrDbModel.FK__Multiprop__Fk_co__5CD6CB2B">
+            <End Role="Comuna" EntitySet="Comuna" />
+            <End Role="Multipropietario" EntitySet="Multipropietario" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Adquirente">
@@ -251,6 +257,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Rol" Relationship="InscripcionesBrDbModel.FK__Rol__Fk_comuna__3C69FB99" FromRole="Comuna" ToRole="Rol" />
+          <NavigationProperty Name="Multipropietario" Relationship="InscripcionesBrDbModel.FK__Multiprop__Fk_co__5CD6CB2B" FromRole="Comuna" ToRole="Multipropietario" />
         </EntityType>
         <EntityType Name="Enajenante">
           <Key>
@@ -262,18 +269,6 @@
           <Property Name="Porcentaje" Type="Double" />
           <Property Name="Porcentaje_Na" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Inscripcion" Relationship="InscripcionesBrDbModel.Inscripcion_Enajenante" FromRole="Enajenante" ToRole="Inscripcion" />
-        </EntityType>
-        <EntityType Name="Multipropietario">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Fojas" Type="Int32" Nullable="false" />
-          <Property Name="Ano_inscripcion" Type="Int32" Nullable="false" />
-          <Property Name="Fk_numero_inscripcion" Type="Int32" Nullable="false" />
-          <Property Name="Vigencia_inicial" Type="Int32" Nullable="false" />
-          <Property Name="Vigencia_final" Type="Int32" />
-          <NavigationProperty Name="Inscripcion" Relationship="InscripcionesBrDbModel.FK__Multiprop__Fk_nu__49C3F6B7" FromRole="Multipropietario" ToRole="Inscripcion" />
         </EntityType>
         <EntityType Name="Rol">
           <Key>
@@ -309,7 +304,6 @@
           <Property Name="Creacion" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Fk_rol" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Rol" Relationship="InscripcionesBrDbModel.FK__Inscripci__Fk_ro__3F466844" FromRole="Inscripcion" ToRole="Rol" />
-          <NavigationProperty Name="Multipropietario" Relationship="InscripcionesBrDbModel.FK__Multiprop__Fk_nu__49C3F6B7" FromRole="Inscripcion" ToRole="Multipropietario" />
           <NavigationProperty Name="Adquirente" Relationship="InscripcionesBrDbModel.Inscripcion_Adquirente" FromRole="Inscripcion" ToRole="Adquirente" />
           <NavigationProperty Name="Enajenante" Relationship="InscripcionesBrDbModel.Inscripcion_Enajenante" FromRole="Inscripcion" ToRole="Enajenante" />
         </EntityType>
@@ -325,18 +319,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Multiprop__Fk_nu__49C3F6B7">
-          <End Type="InscripcionesBrDbModel.Inscripcion" Role="Inscripcion" Multiplicity="1" />
-          <End Type="InscripcionesBrDbModel.Multipropietario" Role="Multipropietario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Inscripcion">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Multipropietario">
-              <PropertyRef Name="Fk_numero_inscripcion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Inscripcion_Adquirente">
           <End Type="InscripcionesBrDbModel.Adquirente" Role="Adquirente" Multiplicity="*" />
           <End Type="InscripcionesBrDbModel.Inscripcion" Role="Inscripcion" Multiplicity="*" />
@@ -344,6 +326,36 @@
         <Association Name="Inscripcion_Enajenante">
           <End Type="InscripcionesBrDbModel.Enajenante" Role="Enajenante" Multiplicity="*" />
           <End Type="InscripcionesBrDbModel.Inscripcion" Role="Inscripcion" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Multipropietario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fk_comuna" Type="Int32" Nullable="false" />
+          <Property Name="Manzana" Type="Int32" Nullable="false" />
+          <Property Name="Predio" Type="Int32" Nullable="false" />
+          <Property Name="Rut" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="Porcentaje_derechos" Type="Double" />
+          <Property Name="Fojas" Type="Int32" Nullable="false" />
+          <Property Name="Ano_inscripcion" Type="Int32" Nullable="false" />
+          <Property Name="Numero_inscripcion" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_inscripcion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Vigencia_inicial" Type="Int32" Nullable="false" />
+          <Property Name="Vigencia_final" Type="Int32" />
+          <NavigationProperty Name="Comuna" Relationship="InscripcionesBrDbModel.FK__Multiprop__Fk_co__5CD6CB2B" FromRole="Multipropietario" ToRole="Comuna" />
+        </EntityType>
+        <Association Name="FK__Multiprop__Fk_co__5CD6CB2B">
+          <End Type="InscripcionesBrDbModel.Comuna" Role="Comuna" Multiplicity="1" />
+          <End Type="InscripcionesBrDbModel.Multipropietario" Role="Multipropietario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comuna">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Multipropietario">
+              <PropertyRef Name="Fk_comuna" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -377,18 +389,6 @@
                 <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Rut" ColumnName="Rut" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Multipropietario">
-            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Multipropietario">
-              <MappingFragment StoreEntitySet="Multipropietario">
-                <ScalarProperty Name="Vigencia_final" ColumnName="Vigencia_final" />
-                <ScalarProperty Name="Vigencia_inicial" ColumnName="Vigencia_inicial" />
-                <ScalarProperty Name="Fk_numero_inscripcion" ColumnName="Fk_numero_inscripcion" />
-                <ScalarProperty Name="Ano_inscripcion" ColumnName="Ano_inscripcion" />
-                <ScalarProperty Name="Fojas" ColumnName="Fojas" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -431,6 +431,24 @@
               <ScalarProperty Name="Id" ColumnName="Fk_enajenante" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Multipropietario">
+            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Multipropietario">
+              <MappingFragment StoreEntitySet="Multipropietario">
+                <ScalarProperty Name="Vigencia_final" ColumnName="Vigencia_final" />
+                <ScalarProperty Name="Vigencia_inicial" ColumnName="Vigencia_inicial" />
+                <ScalarProperty Name="Fecha_inscripcion" ColumnName="Fecha_inscripcion" />
+                <ScalarProperty Name="Numero_inscripcion" ColumnName="Numero_inscripcion" />
+                <ScalarProperty Name="Ano_inscripcion" ColumnName="Ano_inscripcion" />
+                <ScalarProperty Name="Fojas" ColumnName="Fojas" />
+                <ScalarProperty Name="Porcentaje_derechos" ColumnName="Porcentaje_derechos" />
+                <ScalarProperty Name="Rut" ColumnName="Rut" />
+                <ScalarProperty Name="Predio" ColumnName="Predio" />
+                <ScalarProperty Name="Manzana" ColumnName="Manzana" />
+                <ScalarProperty Name="Fk_comuna" ColumnName="Fk_comuna" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

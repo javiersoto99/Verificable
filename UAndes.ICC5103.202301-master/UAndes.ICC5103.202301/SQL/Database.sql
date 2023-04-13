@@ -75,16 +75,21 @@ CREATE TABLE [dbo].[Inscripcion_Enajenante](
     FOREIGN KEY (Fk_enajenante) REFERENCES Enajenante(Id)
 )
 
-
 CREATE TABLE [dbo].[Multipropietario](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Fk_comuna] [int] NOT NULL,
+    [Manzana] [int] NOT NULL,
+    [Predio] [int] NOT NULL,
+    [Rut] [varchar](12) NOT NULL,
+    [Porcentaje_derechos] [float],
     [Fojas] [int] NOT NULL,
     [Ano_inscripcion] [int] NOT NULL,
-    [Fk_numero_inscripcion] [int] NOT NULL,
+    [Numero_inscripcion] [int] NOT NULL,
+    [Fecha_inscripcion] [date] NOT NULL,
     [Vigencia_inicial] [int] NOT NULL,
     [Vigencia_final] [int],
     CONSTRAINT [PK_Multipropietario] PRIMARY KEY CLUSTERED ([Id] ASC),
-    FOREIGN KEY (Fk_numero_inscripcion) REFERENCES Inscripcion(Id)
+    FOREIGN KEY (Fk_comuna) REFERENCES Comuna(Id)
 )
 GO
 

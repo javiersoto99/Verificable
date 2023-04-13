@@ -8,14 +8,14 @@
         <EntityTypeShape EntityType="InscripcionesBrDbModel.Adquirente" Width="1.5" PointX="3" PointY="8.25" />
         <EntityTypeShape EntityType="InscripcionesBrDbModel.Comuna" Width="1.5" PointX="0.75" PointY="1.625" />
         <EntityTypeShape EntityType="InscripcionesBrDbModel.Enajenante" Width="1.5" PointX="3" PointY="5.375" />
-        <EntityTypeShape EntityType="InscripcionesBrDbModel.Multipropietario" Width="1.5" PointX="7.5" PointY="1.25" />
         <EntityTypeShape EntityType="InscripcionesBrDbModel.Rol" Width="1.5" PointX="3" PointY="1.375" />
         <AssociationConnector Association="InscripcionesBrDbModel.FK__Rol__Fk_comuna__3C69FB99" />
         <EntityTypeShape EntityType="InscripcionesBrDbModel.Inscripcion" Width="1.5" PointX="5.25" PointY="4.375" />
         <AssociationConnector Association="InscripcionesBrDbModel.FK__Inscripci__Fk_ro__3F466844" />
-        <AssociationConnector Association="InscripcionesBrDbModel.FK__Multiprop__Fk_nu__49C3F6B7" />
         <AssociationConnector Association="InscripcionesBrDbModel.Inscripcion_Adquirente" />
         <AssociationConnector Association="InscripcionesBrDbModel.Inscripcion_Enajenante" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Multipropietario" Width="1.5" PointX="3" PointY="11.75" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Multiprop__Fk_co__5CD6CB2B" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

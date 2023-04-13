@@ -71,18 +71,21 @@ namespace UAndes.ICC5103._202301.Controllers
             return rol;
         }
 
+        //Crear Multipropietario
+        public Multipropietario CreateMP(int fk_comuna, int manzana, int predio, string rut, double? porcentajeDerechos, int fojas, int numeroInscripcion, DateTime fechaInscripcion)
+        {
+            Multipropietario mp= new Multipropietario();
+            //Falta Agregar: año inscr, vigencia inicial y final
+            //Agregarlo a la base de datos
+            return mp;
+        }
+
         // TODO: Separar método en varios métodos más pequeños
         // POST: Inscripcions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inscripcion inscripcion, int comuna, int manzana, int predio, FormCollection form)
         {
-
-            // Crear Rol y agregarlo a la Inscripción
-            Rol rol = CreateRol(comuna, manzana, predio);
-            db.Rol.Add(rol);
-
-            inscripcion.Fk_rol = rol.Id;
 
             //Crear Enajenantes y Adquirentes y agregarlos a la Inscripción
             var enajenantesListJson = form["enajenantesList"];
@@ -128,7 +131,11 @@ namespace UAndes.ICC5103._202301.Controllers
                     //Condiciones de RdP
                     if (cantidadEnajenantes == 0 && sumaPorcentajeAdquirentes <= 100 && sumaPorcentajeAdquirentesNA == 0)
                     {
-                        //Agregar Enajenantes, Adquirentes e Inscripción a la BBDD
+                        //Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
+                        Rol rol = CreateRol(comuna, manzana, predio);
+                        db.Rol.Add(rol);
+                        inscripcion.Fk_rol = rol.Id;
+
                         foreach (var enajenante in enajenantesList)
                         {
                             db.Enajenante.Add(enajenante);
@@ -158,7 +165,11 @@ namespace UAndes.ICC5103._202301.Controllers
                 }
                 else //No validar el RdP
                 {
-                    //Agregar Enajenantes, Adquirentes e Inscripción a la BBDD
+                    //Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
+                    Rol rol = CreateRol(comuna, manzana, predio);
+                    db.Rol.Add(rol);
+                    inscripcion.Fk_rol = rol.Id;
+
                     foreach (var enajenante in enajenantesList)
                     {
                         db.Enajenante.Add(enajenante);
