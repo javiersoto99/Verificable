@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UAndes.ICC5103._202301.Models.Inscripcion>
+﻿@model IEnumerable<UAndes.ICC5103._202301.Models.Multipropietario>
 
 
 @{
@@ -56,7 +56,9 @@
     <h3>Resultados:</h3>
     <table class="table">
         <thead>
-        <th>Rol</th>
+        <th>Comuna</th>
+        <th>Manzana</th>
+        <th>Predio</th>
         <th>Rut</th>
         <th>% Derechos</th>
         <th>Año Inscripción</th>
@@ -75,14 +77,16 @@
             @foreach (var resultado in Model)
             {
                 <tr>
-                    <td>@resultado.Fk_rol</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>@resultado.Creacion.Year</td>
+                    <td>@resultado.Fk_comuna</td>
+                    <td>@resultado.Manzana</td>
+                    <td>@resultado.Predio</td>
+                    <td>@resultado.Rut</td>
+                    <td>@resultado.Porcentaje_derechos</td>
+                    <td>@resultado.Ano_inscripcion</td>
                     <td>@resultado.Numero_inscripcion</td>
-                    <td>@resultado.Creacion.Year</td>
-                    <td>@resultado.Creacion.Year</td>
-                    <td>@resultado.Creacion.Year</td>
+                    <td>@resultado.Fecha_inscripcion</td>
+                    <td>@resultado.Vigencia_inicial</td>
+                    <td>@resultado.Vigencia_final</td>
                 </tr>
 
             }

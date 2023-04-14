@@ -15,9 +15,9 @@ namespace UAndes.ICC5103._202301.Controllers
         public ActionResult Index()
         {
             ViewBag.Comunas = db.Comuna.ToList();
-            var inscripcion = db.Inscripcion.ToList();
+            var multiPropietario = db.Multipropietario.ToList();
 
-            return View(inscripcion);
+            return View(multiPropietario);
         }
 
         // GET: Multipropietario / Search
@@ -26,8 +26,8 @@ namespace UAndes.ICC5103._202301.Controllers
         {
             ViewBag.Comunas = db.Comuna.ToList();
 
-            var idRolBusqueda = db.Rol.Where(r => r.Fk_comuna== comuna && r.Manzana == manzana && r.Predio == predio).Select(r => r.Id).FirstOrDefault();
-            var resultado = db.Inscripcion.Where(i => i.Fk_rol == idRolBusqueda).ToList();
+            var resultado = db.Multipropietario.Where(mp => mp.Fk_comuna== comuna && mp.Manzana == manzana && mp.Predio ==predio ).ToList();
+
             //resultado = resultado.Where(i => i.Creacion.Year == anoMP).ToList();
 
             return View(resultado);

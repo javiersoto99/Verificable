@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -75,8 +76,20 @@ namespace UAndes.ICC5103._202301.Controllers
         public Multipropietario CreateMP(int fk_comuna, int manzana, int predio, string rut, double? porcentajeDerechos, int fojas, int numeroInscripcion, DateTime fechaInscripcion)
         {
             Multipropietario mp= new Multipropietario();
-            //Falta Agregar: año inscr, vigencia inicial y final
-            //Agregarlo a la base de datos
+
+            mp.Fk_comuna = fk_comuna;
+            mp.Manzana = manzana;
+            mp.Predio = predio;
+            mp.Rut = rut;
+            mp.Porcentaje_derechos = porcentajeDerechos;
+            mp.Fojas = fojas;
+            mp.Numero_inscripcion = numeroInscripcion;
+            mp.Fecha_inscripcion = fechaInscripcion;
+            //Asumiendo
+            mp.Ano_inscripcion = DateTime.Now.Year;
+            mp.Vigencia_inicial = DateTime.Now.Year;
+            mp.Vigencia_final = null;
+ 
             return mp;
         }
 
@@ -91,9 +104,12 @@ namespace UAndes.ICC5103._202301.Controllers
             var enajenantesListJson = form["enajenantesList"];
             var enajenantesList = JsonConvert.DeserializeObject<List<Enajenante>>(enajenantesListJson);
 
-            foreach(var enajenante in enajenantesList)
+            if(enajenantesList != null)
             {
-                inscripcion.Enajenante.Add(enajenante);
+                foreach (var enajenante in enajenantesList)
+                {
+                    inscripcion.Enajenante.Add(enajenante);
+                }
             }
 
             var adquirentesListJson = form["adquirentesList"];
@@ -136,23 +152,23 @@ namespace UAndes.ICC5103._202301.Controllers
                         db.Rol.Add(rol);
                         inscripcion.Fk_rol = rol.Id;
 
-                        foreach (var enajenante in enajenantesList)
+                        if (enajenantesList != null)
                         {
-                            db.Enajenante.Add(enajenante);
+                            foreach (var enajenante in enajenantesList)
+                            {
+                                db.Enajenante.Add(enajenante);
+                            }
                         }
-
+                            
                         foreach (var adquirente in adquirentesList)
                         {
                             db.Adquirente.Add(adquirente);
+                            //Crear instancia de Multipropietario
+                            Multipropietario multiP = CreateMP(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
+                            db.Multipropietario.Add(multiP);
                         }
 
                         db.Inscripcion.Add(inscripcion);
-                        //Falta: Multipropietario
-                        //Multipropietario multiPropietario = new Multipropietario();
-                        //multiPropietario.Fk_numero_inscripcion = inscripcion.Id;
-                        //multiPropietario.Ano_inscripcion = DateTime.Now.Year;
-                        //multiPropietario.Fojas = inscripcion.Fojas;
-                        
 
                         db.SaveChanges();
                         return RedirectToAction("Index");
@@ -170,14 +186,20 @@ namespace UAndes.ICC5103._202301.Controllers
                     db.Rol.Add(rol);
                     inscripcion.Fk_rol = rol.Id;
 
-                    foreach (var enajenante in enajenantesList)
+                    if (enajenantesList != null)
                     {
-                        db.Enajenante.Add(enajenante);
+                        foreach (var enajenante in enajenantesList)
+                        {
+                            db.Enajenante.Add(enajenante);
+                        }
                     }
 
                     foreach (var adquirente in adquirentesList)
                     {
                         db.Adquirente.Add(adquirente);
+                        //Crear instancia de Multipropietario
+                        Multipropietario multiP = CreateMP(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
+                        db.Multipropietario.Add(multiP);
                     }
                     db.Inscripcion.Add(inscripcion);
                     db.SaveChanges();
