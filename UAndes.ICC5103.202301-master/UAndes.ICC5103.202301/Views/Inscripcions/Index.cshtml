@@ -34,7 +34,7 @@
             @Html.DisplayFor(modelItem => item.Id)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Creacion)
+            @item.Creacion.ToShortDateString()
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Fojas)

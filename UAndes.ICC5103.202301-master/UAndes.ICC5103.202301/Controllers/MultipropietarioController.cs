@@ -15,20 +15,20 @@ namespace UAndes.ICC5103._202301.Controllers
         public ActionResult Index()
         {
             ViewBag.Comunas = db.Comuna.ToList();
-            var multiPropietario = db.Multipropietario.ToList();
+            var multiPropietario = db.Multipropietario.OrderBy(mp => mp.Fecha_inscripcion.Year).ToList();
 
             return View(multiPropietario);
         }
 
         // GET: Multipropietario / Search
         [HttpGet]
-        public ActionResult Search(int comuna, int manzana, int predio)
+        public ActionResult Search(int ano, int comuna, int manzana, int predio)
         {
             ViewBag.Comunas = db.Comuna.ToList();
 
-            var resultado = db.Multipropietario.Where(mp => mp.Fk_comuna== comuna && mp.Manzana == manzana && mp.Predio ==predio ).ToList();
-
-            //resultado = resultado.Where(i => i.Creacion.Year == anoMP).ToList();
+            var resultado = db.Multipropietario.Where(mp => mp.Fk_comuna == comuna && mp.Manzana == manzana && mp.Predio == predio).ToList();
+            //Filtrar por Año
+            resultado = resultado.Where(r => r.Vigencia_inicial == ano).ToList();
 
             return View(resultado);
         }

@@ -85,9 +85,17 @@ namespace UAndes.ICC5103._202301.Controllers
             mp.Fojas = fojas;
             mp.Numero_inscripcion = numeroInscripcion;
             mp.Fecha_inscripcion = fechaInscripcion;
-            //Asumiendo
-            mp.Ano_inscripcion = DateTime.Now.Year;
-            mp.Vigencia_inicial = DateTime.Now.Year;
+            mp.Ano_inscripcion = fechaInscripcion.Year;
+            //Verificar que Vigencia Inicial sea de 2019 en adelante
+            if (fechaInscripcion.Year < 2019)
+            {
+                mp.Vigencia_inicial = 2019;
+            }
+            else
+            {
+                mp.Vigencia_inicial = fechaInscripcion.Year;
+            }
+
             mp.Vigencia_final = null;
  
             return mp;
@@ -100,7 +108,7 @@ namespace UAndes.ICC5103._202301.Controllers
         public ActionResult Create(Inscripcion inscripcion, int comuna, int manzana, int predio, FormCollection form)
         {
 
-            //Crear Enajenantes y Adquirentes y agregarlos a la Inscripción
+            //Crear Enajenantes y agregarlos a la Inscripción
             var enajenantesListJson = form["enajenantesList"];
             var enajenantesList = JsonConvert.DeserializeObject<List<Enajenante>>(enajenantesListJson);
 
@@ -112,6 +120,7 @@ namespace UAndes.ICC5103._202301.Controllers
                 }
             }
 
+            //Crear Adquirentes y agregarlos a la Inscripción
             var adquirentesListJson = form["adquirentesList"];
             var adquirentesList = JsonConvert.DeserializeObject<List<Adquirente>>(adquirentesListJson);
 

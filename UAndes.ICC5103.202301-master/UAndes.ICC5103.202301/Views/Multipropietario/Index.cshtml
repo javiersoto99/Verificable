@@ -14,8 +14,8 @@
     @using (Html.BeginForm("Search", "Multipropietario", FormMethod.Get))
     {
 
-        @*<label for="anoMP">Año</label>
-            <input type="number" id="anoMP" />*@
+        <label for="ano">Año</label>
+            <input type="number" id="ano" name="Ano" />
 
 
         <div class="row">
@@ -84,7 +84,7 @@
                     <td>@resultado.Porcentaje_derechos</td>
                     <td>@resultado.Ano_inscripcion</td>
                     <td>@resultado.Numero_inscripcion</td>
-                    <td>@resultado.Fecha_inscripcion</td>
+                    <td>@resultado.Fecha_inscripcion.ToShortDateString()</td>
                     <td>@resultado.Vigencia_inicial</td>
                     <td>@resultado.Vigencia_final</td>
                 </tr>
