@@ -173,6 +173,11 @@ namespace UAndes.ICC5103._202301.Controllers
                         {
                             db.Adquirente.Add(adquirente);
                             //Crear instancia de Multipropietario
+                            if (db.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio).Any())
+                            {
+                                db.Multipropietario.RemoveRange(db.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio));
+                            }
+
                             Multipropietario multiP = CreateMP(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
                             db.Multipropietario.Add(multiP);
                         }

@@ -27,8 +27,17 @@ namespace UAndes.ICC5103._202301.Controllers
             ViewBag.Comunas = db.Comuna.ToList();
 
             var resultado = db.Multipropietario.Where(mp => mp.Fk_comuna == comuna && mp.Manzana == manzana && mp.Predio == predio).ToList();
+
             //Filtrar por Año
-            resultado = resultado.Where(r => r.Vigencia_inicial == ano).ToList();
+            if(resultado.Select(r => r.Vigencia_final).Any()) 
+            {
+                resultado = resultado.Where(r => r.Vigencia_inicial <= ano &&  r.Vigencia_final >= ano).ToList();
+            }
+            else
+            {
+                resultado = resultado.Where(r => r.Vigencia_inicial == ano).ToList();
+            }
+            
 
             return View(resultado);
         }
