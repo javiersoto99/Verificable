@@ -168,9 +168,16 @@ namespace UAndes.ICC5103._202301.Controllers
                             database.Adquirente.Add(adquirente);
 
                             // Crear instancia de Multipropietario
-                            if (database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio).Any())
+                            if (database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion == inscripcion.Numero_inscripcion).Any())
                             {
                                 database.Multipropietario.RemoveRange(database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio));
+                            }
+                            else if(database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != inscripcion.Numero_inscripcion).Any())
+                            {
+                                foreach(var mp in database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != inscripcion.Numero_inscripcion))
+                                {
+                                    mp.Vigencia_final = inscripcion.Creacion.Year - 1;
+                                }
                             }
 
                             Multipropietario multiP = CreateMultipropietario(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
