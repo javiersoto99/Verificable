@@ -9,24 +9,22 @@ namespace UAndes.ICC5103._202301.Controllers
 {
     public class MultipropietarioController : Controller
     {
-        private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
+        private InscripcionesBrDbEntities database = new InscripcionesBrDbEntities();
 
-        // GET: Multipropietario
         public ActionResult Index()
         {
-            ViewBag.Comunas = db.Comuna.ToList();
-            var multiPropietario = db.Multipropietario.OrderBy(mp => mp.Fecha_inscripcion.Year).ToList();
+            ViewBag.Comunas = database.Comuna.ToList();
+            var multipropietario = database.Multipropietario.OrderBy(mp => mp.Fecha_inscripcion.Year).ToList();
 
-            return View(multiPropietario);
+            return View(multipropietario);
         }
 
-        // GET: Multipropietario / Search
         [HttpGet]
         public ActionResult Search(int ano, int comuna, int manzana, int predio)
         {
-            ViewBag.Comunas = db.Comuna.ToList();
+            ViewBag.Comunas = database.Comuna.ToList();
 
-            var resultado = db.Multipropietario.Where(mp => mp.Fk_comuna == comuna && mp.Manzana == manzana && mp.Predio == predio).ToList();
+            var resultado = database.Multipropietario.Where(mp => mp.Fk_comuna == comuna && mp.Manzana == manzana && mp.Predio == predio).ToList();
 
             //Filtrar por Año
             if(resultado.Select(r => r.Vigencia_final).Any()) 

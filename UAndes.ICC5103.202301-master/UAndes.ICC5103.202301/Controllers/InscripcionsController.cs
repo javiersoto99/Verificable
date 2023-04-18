@@ -15,16 +15,14 @@ namespace UAndes.ICC5103._202301.Controllers
 {
     public class InscripcionsController : Controller
     {
-        private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
+        private InscripcionesBrDbEntities database = new InscripcionesBrDbEntities();
 
-        // GET: Inscripcions
         public ActionResult Index()
         {
-            var inscripcion = db.Inscripcion.Include(i => i.Rol);
+            var inscripcion = database.Inscripcion.Include(i => i.Rol);
             return View(inscripcion.ToList());
         }
 
-        // GET: Inscripcions/Details/id
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -32,39 +30,38 @@ namespace UAndes.ICC5103._202301.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Inscripcion inscripcion = db.Inscripcion.Find(id);
+            Inscripcion inscripcion = database.Inscripcion.Find(id);
 
             if (inscripcion == null)
             {
                 return HttpNotFound();
             }
 
-            var joinComunaRol = (from r in db.Rol join c in db.Comuna on r.Fk_comuna equals c.Id select new
+            var joinComunaRol = (from r in database.Rol join c in database.Comuna on r.Fk_comuna equals c.Id select new
                     {
                         Nombre = c.Nombre
                     }
                 ).FirstOrDefault();
 
             ViewBag.Comuna = joinComunaRol.Nombre;
-            ViewBag.Manzana = db.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Manzana).FirstOrDefault();
-            ViewBag.Predio = db.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Predio).FirstOrDefault();
+            ViewBag.Manzana = database.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Manzana).FirstOrDefault();
+            ViewBag.Predio = database.Rol.Where(r => r.Id == inscripcion.Fk_rol).Select(r => r.Predio).FirstOrDefault();
 
             return View(inscripcion);
         }
 
-        // GET: Inscripcions/Create
         public ActionResult Create()
         {
-            ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id");
-            ViewBag.Comunas = db.Comuna.ToList();
+            ViewBag.Fk_rol = new SelectList(database.Rol, "Id", "Id");
+            ViewBag.Comunas = database.Comuna.ToList();
 
             return View();
         }
 
-        // Crear Rol
         public Rol CreateRol(int comuna, int manzana, int predio)
         {
             Rol rol = new Rol();
+
             rol.Fk_comuna = comuna;
             rol.Manzana = manzana;
             rol.Predio = predio;
@@ -72,43 +69,41 @@ namespace UAndes.ICC5103._202301.Controllers
             return rol;
         }
 
-        //Crear Multipropietario
-        public Multipropietario CreateMP(int fk_comuna, int manzana, int predio, string rut, double? porcentajeDerechos, int fojas, int numeroInscripcion, DateTime fechaInscripcion)
+        public Multipropietario CreateMultipropietario(int fk_comuna, int manzana, int predio, string rut, double? porcentajeDerechos, int fojas, int numeroInscripcion, DateTime fechaInscripcion)
         {
-            Multipropietario mp= new Multipropietario();
+            Multipropietario multipropietario= new Multipropietario();
 
-            mp.Fk_comuna = fk_comuna;
-            mp.Manzana = manzana;
-            mp.Predio = predio;
-            mp.Rut = rut;
-            mp.Porcentaje_derechos = porcentajeDerechos;
-            mp.Fojas = fojas;
-            mp.Numero_inscripcion = numeroInscripcion;
-            mp.Fecha_inscripcion = fechaInscripcion;
-            mp.Ano_inscripcion = fechaInscripcion.Year;
-            //Verificar que Vigencia Inicial sea de 2019 en adelante
+            multipropietario.Fk_comuna = fk_comuna;
+            multipropietario.Manzana = manzana;
+            multipropietario.Predio = predio;
+            multipropietario.Rut = rut;
+            multipropietario.Porcentaje_derechos = porcentajeDerechos;
+            multipropietario.Fojas = fojas;
+            multipropietario.Numero_inscripcion = numeroInscripcion;
+            multipropietario.Fecha_inscripcion = fechaInscripcion;
+            multipropietario.Ano_inscripcion = fechaInscripcion.Year;
+
+            // Verificar que Vigencia Inicial sea de 2019 en adelante
             if (fechaInscripcion.Year < 2019)
             {
-                mp.Vigencia_inicial = 2019;
+                multipropietario.Vigencia_inicial = 2019;
             }
             else
             {
-                mp.Vigencia_inicial = fechaInscripcion.Year;
+                multipropietario.Vigencia_inicial = fechaInscripcion.Year;
             }
 
-            mp.Vigencia_final = null;
+            multipropietario.Vigencia_final = null;
  
-            return mp;
+            return multipropietario;
         }
 
-        // TODO: Separar método en varios métodos más pequeños
-        // POST: Inscripcions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inscripcion inscripcion, int comuna, int manzana, int predio, FormCollection form)
         {
 
-            //Crear Enajenantes y agregarlos a la Inscripción
+            // Crear Enajenantes y agregarlos a la Inscripción
             var enajenantesListJson = form["enajenantesList"];
             var enajenantesList = JsonConvert.DeserializeObject<List<Enajenante>>(enajenantesListJson);
 
@@ -120,7 +115,7 @@ namespace UAndes.ICC5103._202301.Controllers
                 }
             }
 
-            //Crear Adquirentes y agregarlos a la Inscripción
+            // Crear Adquirentes y agregarlos a la Inscripción
             var adquirentesListJson = form["adquirentesList"];
             var adquirentesList = JsonConvert.DeserializeObject<List<Adquirente>>(adquirentesListJson);
 
@@ -129,10 +124,10 @@ namespace UAndes.ICC5103._202301.Controllers
                 inscripcion.Adquirente.Add(adquirente);
             }
 
-            //Calcular Cantidad de Enajenantes
+            // Calcular Cantidad de Enajenantes
             int cantidadEnajenantes = inscripcion.Enajenante.Count();
 
-            //Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
+            // Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
             double sumaPorcentajeAdquirentes;
             double sumaPorcentajeAdquirentesNA;
 
@@ -147,7 +142,6 @@ namespace UAndes.ICC5103._202301.Controllers
                 sumaPorcentajeAdquirentesNA = 0;
             }
 
-            //Validar el modelo
             if (ModelState.IsValid)
             {
                 //Validar RdP
@@ -158,77 +152,74 @@ namespace UAndes.ICC5103._202301.Controllers
                     {
                         //Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
                         Rol rol = CreateRol(comuna, manzana, predio);
-                        db.Rol.Add(rol);
+                        database.Rol.Add(rol);
                         inscripcion.Fk_rol = rol.Id;
 
                         if (enajenantesList != null)
                         {
                             foreach (var enajenante in enajenantesList)
                             {
-                                db.Enajenante.Add(enajenante);
+                                database.Enajenante.Add(enajenante);
                             }
                         }
-                            
+
                         foreach (var adquirente in adquirentesList)
                         {
-                            db.Adquirente.Add(adquirente);
-                            //Crear instancia de Multipropietario
-                            if (db.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio).Any())
+                            database.Adquirente.Add(adquirente);
+
+                            // Crear instancia de Multipropietario
+                            if (database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio).Any())
                             {
-                                db.Multipropietario.RemoveRange(db.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio));
+                                database.Multipropietario.RemoveRange(database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio));
                             }
 
-                            Multipropietario multiP = CreateMP(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
-                            db.Multipropietario.Add(multiP);
+                            Multipropietario multiP = CreateMultipropietario(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
+                            database.Multipropietario.Add(multiP);
                         }
 
-                        db.Inscripcion.Add(inscripcion);
+                        database.Inscripcion.Add(inscripcion);
 
-                        db.SaveChanges();
+                        database.SaveChanges();
                         return RedirectToAction("Index");
                     }
                     else
                     {
-                        //Retornar Error
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                     }
                 }
-                else //No validar el RdP
+                else  // No validar el RdP
                 {
-                    //Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
+                    // Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
                     Rol rol = CreateRol(comuna, manzana, predio);
-                    db.Rol.Add(rol);
+                    database.Rol.Add(rol);
                     inscripcion.Fk_rol = rol.Id;
 
                     if (enajenantesList != null)
                     {
                         foreach (var enajenante in enajenantesList)
                         {
-                            db.Enajenante.Add(enajenante);
+                            database.Enajenante.Add(enajenante);
                         }
                     }
 
                     foreach (var adquirente in adquirentesList)
                     {
-                        db.Adquirente.Add(adquirente);
-                        //Crear instancia de Multipropietario
-                        Multipropietario multiP = CreateMP(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
-                        db.Multipropietario.Add(multiP);
+                        database.Adquirente.Add(adquirente);
+                        // Crear instancia de Multipropietario
+
+                        Multipropietario multiP = CreateMultipropietario(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
+                        database.Multipropietario.Add(multiP);
                     }
-                    db.Inscripcion.Add(inscripcion);
-                    db.SaveChanges();
+                    database.Inscripcion.Add(inscripcion);
+                    database.SaveChanges();
                     return RedirectToAction("Index");
                 }
-
-
             }
 
-            ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
+            ViewBag.Fk_rol = new SelectList(database.Rol, "Id", "Id", inscripcion.Fk_rol);
             return View(inscripcion);
-
         }
 
-        // GET: Inscripcions/Edit/id
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -236,36 +227,33 @@ namespace UAndes.ICC5103._202301.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Inscripcion inscripcion = db.Inscripcion.Find(id);
+            Inscripcion inscripcion = database.Inscripcion.Find(id);
 
             if (inscripcion == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
-
+            ViewBag.Fk_rol = new SelectList(database.Rol, "Id", "Id", inscripcion.Fk_rol);
             return View(inscripcion);
         }
 
-        // POST: Inscripcions/Edit/id
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Numero_inscripcion,Cne,Fojas,Creacion,Fk_rol")] Inscripcion inscripcion)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(inscripcion).State = EntityState.Modified;
-                db.SaveChanges();
+                database.Entry(inscripcion).State = EntityState.Modified;
+                database.SaveChanges();
 
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Fk_rol = new SelectList(db.Rol, "Id", "Id", inscripcion.Fk_rol);
+            ViewBag.Fk_rol = new SelectList(database.Rol, "Id", "Id", inscripcion.Fk_rol);
 
             return View(inscripcion);
         }
 
-        // GET: Inscripcions/Delete/id
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -273,7 +261,7 @@ namespace UAndes.ICC5103._202301.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Inscripcion inscripcion = db.Inscripcion.Find(id);
+            Inscripcion inscripcion = database.Inscripcion.Find(id);
 
             if (inscripcion == null)
             {
@@ -283,14 +271,13 @@ namespace UAndes.ICC5103._202301.Controllers
             return View(inscripcion);
         }
 
-        // POST: Inscripcions/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Inscripcion inscripcion = db.Inscripcion.Find(id);
-            db.Inscripcion.Remove(inscripcion);
-            db.SaveChanges();
+            Inscripcion inscripcion = database.Inscripcion.Find(id);
+            database.Inscripcion.Remove(inscripcion);
+            database.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -299,7 +286,7 @@ namespace UAndes.ICC5103._202301.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                database.Dispose();
             }
             base.Dispose(disposing);
         }
