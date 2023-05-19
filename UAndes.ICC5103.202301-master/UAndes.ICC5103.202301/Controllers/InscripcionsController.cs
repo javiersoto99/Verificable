@@ -71,6 +71,8 @@ namespace UAndes.ICC5103._202301.Controllers
 
         public Multipropietario CreateMultipropietario(int fk_comuna, int manzana, int predio, string rut, double? porcentajeDerechos, int fojas, int numeroInscripcion, DateTime fechaInscripcion)
         {
+            int anoLimite = 2019;
+
             Multipropietario multipropietario= new Multipropietario();
 
             multipropietario.Fk_comuna = fk_comuna;
@@ -84,9 +86,9 @@ namespace UAndes.ICC5103._202301.Controllers
             multipropietario.Ano_inscripcion = fechaInscripcion.Year;
 
             // Verificar que Vigencia Inicial sea de 2019 en adelante
-            if (fechaInscripcion.Year < 2019)
+            if (fechaInscripcion.Year < anoLimite)
             {
-                multipropietario.Vigencia_inicial = 2019;
+                multipropietario.Vigencia_inicial = anoLimite;
             }
             else
             {
@@ -119,11 +121,14 @@ namespace UAndes.ICC5103._202301.Controllers
             var adquirentesListJson = form["adquirentesList"];
             var adquirentesList = JsonConvert.DeserializeObject<List<Adquirente>>(adquirentesListJson);
 
-            foreach (var adquirente in adquirentesList)
+            if(adquirentesList != null)
             {
-                inscripcion.Adquirente.Add(adquirente);
+                foreach (var adquirente in adquirentesList)
+                {
+                    inscripcion.Adquirente.Add(adquirente);
+                }
             }
-
+            
             // Calcular Cantidad de Enajenantes
             int cantidadEnajenantes = inscripcion.Enajenante.Count();
 
@@ -191,7 +196,7 @@ namespace UAndes.ICC5103._202301.Controllers
                     }
                     else
                     {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        return RedirectToAction("Error");
                     }
                 }
                 else  // No validar el RdP
@@ -209,14 +214,17 @@ namespace UAndes.ICC5103._202301.Controllers
                         }
                     }
 
-                    foreach (var adquirente in adquirentesList)
-                    {
-                        database.Adquirente.Add(adquirente);
-                        // Crear instancia de Multipropietario
+                    if(adquirentesList!= null){
+                        foreach (var adquirente in adquirentesList)
+                        {
+                            database.Adquirente.Add(adquirente);
+                            // Crear instancia de Multipropietario
 
-                        Multipropietario multiP = CreateMultipropietario(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
-                        database.Multipropietario.Add(multiP);
+                            Multipropietario multiP = CreateMultipropietario(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
+                            database.Multipropietario.Add(multiP);
+                        }
                     }
+                    
                     database.Inscripcion.Add(inscripcion);
                     database.SaveChanges();
                     return RedirectToAction("Index");
@@ -287,6 +295,11 @@ namespace UAndes.ICC5103._202301.Controllers
             database.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Error()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)

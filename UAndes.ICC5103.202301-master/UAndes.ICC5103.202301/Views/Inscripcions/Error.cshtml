@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+}
+
+<h2>Error!</h2>
+
+<p>Algo ocurrio mal con tu procesamiento de inscripcion, por favor revisa los siguentes puntos:</p>
+
+<ul>
+    <li>
+        Un RdP no tiene Enajenantes y tiene 1 o más Adquirentes.
+    </li>
+    <li>
+        La suma de porcentajes (%s) de los Adquirentes debe ser ≤ 100%.
+    </li>
+    <li>
+        Uno o más de los adquirentes puede tener un porcentaje no acreditado.
+    </li>
+    <li>
+        Compraventa tiene 1 o más Enajenantes y 1 o más Adquirentes.
+    </li>
+</ul>
+
+<p>
+    @Html.ActionLink("Volver a realizar la inscripción", "Create")
+</p>
+

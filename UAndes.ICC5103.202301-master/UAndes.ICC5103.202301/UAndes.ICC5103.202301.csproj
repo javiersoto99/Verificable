@@ -233,6 +233,7 @@
     <Content Include="Views\Inscripcions\Search.cshtml" />
     <Content Include="Views\Multipropietario\Index.cshtml" />
     <Content Include="Views\Multipropietario\Search.cshtml" />
+    <Content Include="Views\Inscripcions\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
