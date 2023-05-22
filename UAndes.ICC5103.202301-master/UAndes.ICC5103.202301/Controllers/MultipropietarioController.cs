@@ -20,14 +20,12 @@ namespace UAndes.ICC5103._202301.Controllers {
         public ActionResult Search(int ano, int comuna, int manzana, int predio) {
             ViewBag.Comunas = database.Comuna.ToList();
 
+            var resultadoFinal = new List<Multipropietario>();
+
             var resultado = database.Multipropietario.Where(mp => mp.Fk_comuna == comuna && mp.Manzana == manzana && mp.Predio == predio).ToList();
 
             // Filtrar por Año
-            if (resultado.Select(r => r.Vigencia_final).Any()) {
-                resultado = resultado.Where(r => r.Vigencia_inicial <= ano && r.Vigencia_final >= ano).ToList();
-            } else {
-                resultado = resultado.Where(r => r.Vigencia_inicial == ano).ToList();
-            }
+            resultado = resultado.Where(r => r.Vigencia_inicial <= ano && (r.Vigencia_final == null || r.Vigencia_final >= ano)).OrderBy(r => r.Numero_inscripcion).ToList();
 
             return View(resultado);
         }

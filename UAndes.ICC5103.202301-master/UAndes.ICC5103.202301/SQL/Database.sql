@@ -99,41 +99,11 @@ GO
 USE [InscripcionesBrDb]
 GO
 
--- Inscripcion 1
-INSERT [dbo].[Adquirente] ([Rut], [Nombre], [Porcentaje], [Porcentaje_Na]) VALUES ('20654321-0', 'Juan Perez', 50, 0)
-INSERT [dbo].[Adquirente] ([Rut], [Nombre], [Porcentaje], [Porcentaje_Na]) VALUES ('20654322-1', 'Tomas Ruiz', 20, 0)
-INSERT [dbo].[Adquirente] ([Rut], [Nombre], [Porcentaje], [Porcentaje_Na]) VALUES ('20654323-2', 'Maria Lopez', 30, 0)
-
-INSERT [dbo].[Enajenante] ([Rut], [Nombre], [Porcentaje], [Porcentaje_Na]) VALUES ('20654324-3', 'Luis Varela', 10, 0)
-INSERT [dbo].[Enajenante] ([Rut], [Nombre], [Porcentaje], [Porcentaje_Na]) VALUES ('20654325-4', 'Pedro Gomez', 90, 0)
+-- Comunas
 
 INSERT [dbo].[Comuna] ([Nombre]) VALUES ('Las Condes')
-
-INSERT [dbo].[Rol] ([Fk_comuna], [Manzana], [Predio]) VALUES (1, 12, 13)
-
-INSERT [dbo].[Inscripcion] ([Numero_inscripcion], [Cne], [Fojas], [Creacion], [Fk_rol]) VALUES (1, 'Compraventa', 0, '2019-01-01', 1)
-
-INSERT [dbo].[Inscripcion_Adquirente] ([Fk_inscripcion], [Fk_adquirente]) VALUES (1, 1)
-INSERT [dbo].[Inscripcion_Adquirente] ([Fk_inscripcion], [Fk_adquirente]) VALUES (1, 2)
-INSERT [dbo].[Inscripcion_Adquirente] ([Fk_inscripcion], [Fk_adquirente]) VALUES (1, 3)
-
-INSERT [dbo].[Inscripcion_Enajenante] ([Fk_inscripcion], [Fk_enajenante]) VALUES (1, 1)
-INSERT [dbo].[Inscripcion_Enajenante] ([Fk_inscripcion], [Fk_enajenante]) VALUES (1, 2)
-
--- Inscripcion 2
-INSERT [dbo].[Adquirente] ([Rut], [Nombre], [Porcentaje], [Porcentaje_Na]) VALUES ('20654326-5', 'Elena Saez', NULL, 1)
-
-INSERT [dbo].[Enajenante] ([Rut], [Nombre], [Porcentaje], [Porcentaje_Na]) VALUES ('20654327-6', 'Jose Soto', 100, 0)
-
 INSERT [dbo].[Comuna] ([Nombre]) VALUES ('Vitacura')
 
-INSERT [dbo].[Rol] ([Fk_comuna], [Manzana], [Predio]) VALUES (2, 10, 20)
-
-INSERT [dbo].[Inscripcion] ([Numero_inscripcion], [Cne], [Fojas], [Creacion], [Fk_rol]) VALUES (2, 'Regularización de Patrimonio', 0, '2020-01-01', 2)
-
-INSERT [dbo].[Inscripcion_Adquirente] ([Fk_inscripcion], [Fk_adquirente]) VALUES (2, 4)
-
-INSERT [dbo].[Inscripcion_Enajenante] ([Fk_inscripcion], [Fk_enajenante]) VALUES (2, 3)
 
 
 
