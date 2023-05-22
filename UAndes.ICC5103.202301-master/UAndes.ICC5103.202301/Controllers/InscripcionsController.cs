@@ -100,6 +100,220 @@ namespace UAndes.ICC5103._202301.Controllers
             return multipropietario;
         }
 
+        public void CreateMultipropietarioRDP(int fk_comuna, int manzana, int predio, List<Adquirente> listaAdquirentes, int fojas, int numeroInscripcion, DateTime fechaInscripcion)
+        {
+            int anoLimite = 2019;
+
+            //Repartir Porcentajes nulos
+            double sumaPorcentajes = 0.0;
+            int sumaPorcentajesNulos = 0;
+
+            foreach (var adquirente in listaAdquirentes)
+            {
+                if(adquirente.Porcentaje != null)
+                {
+                    sumaPorcentajes += adquirente.Porcentaje.Value;
+                }
+                else
+                {
+                    sumaPorcentajesNulos ++;
+                }
+
+            }
+
+            double porcentajeRestanteCU = (100 - sumaPorcentajes) / sumaPorcentajesNulos;            
+
+            foreach(var adquirente in listaAdquirentes)
+            {
+                Multipropietario multipropietario = new Multipropietario();
+
+                multipropietario.Fk_comuna = fk_comuna;
+                multipropietario.Manzana = manzana;
+                multipropietario.Predio = predio;
+                multipropietario.Rut = adquirente.Rut;
+
+                if(adquirente.Porcentaje != null)
+                {
+                    multipropietario.Porcentaje_derechos = adquirente.Porcentaje.Value;
+                }
+                else
+                {
+                    multipropietario.Porcentaje_derechos = porcentajeRestanteCU;
+                }
+                
+                multipropietario.Fojas = fojas;
+                multipropietario.Numero_inscripcion = numeroInscripcion;
+                multipropietario.Fecha_inscripcion = fechaInscripcion;
+                multipropietario.Ano_inscripcion = fechaInscripcion.Year;
+
+                // Verificar que año de Vigencia Inicial 
+                if (fechaInscripcion.Year < anoLimite)
+                {
+                    multipropietario.Vigencia_inicial = anoLimite;
+                }
+                else
+                {
+                    multipropietario.Vigencia_inicial = fechaInscripcion.Year;
+                }
+
+                multipropietario.Vigencia_final = null;
+
+                database.Multipropietario.Add(multipropietario);
+
+
+            }
+
+            //Checkear si es una instancia nueva de la propiedad
+            if (database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion == numeroInscripcion).Any())
+            {
+                database.Multipropietario.RemoveRange(database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio));
+            }
+            else if (database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != numeroInscripcion).Any())
+            {
+                foreach (var mp in database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != numeroInscripcion))
+                {
+                    mp.Vigencia_final = fechaInscripcion.Year - 1;
+                }
+            }
+
+
+
+        }
+
+        public void CreateMultipropietarioCompraventa(int fk_comuna, int manzana, int predio, List<Adquirente> listaAdquirentes, List<Enajenante> listaEnajenantes, int fojas, int numeroInscripcion, DateTime fechaInscripcion)
+        {
+            int anoLimite = 2019;
+            double sumaPorcentajeTotalTransferencia = 0.0;
+            double sumaPorcentajes = 0.0;
+            int sumaPorcentajesNulos = 0;
+            double porcentajeRestanteCU = 0.0;
+            double porcentajeRestanteEnajenante = 0.0;
+
+            //Checkear por enajenantes fantasmas
+            foreach (var enajenante in listaEnajenantes)
+            {
+                var enajenanteBBDD = database.Multipropietario.Where(e => e.Rut == enajenante.Rut).FirstOrDefault();
+                if (enajenanteBBDD == null)
+                {
+                    //Error
+                    Console.WriteLine("Enajenante No Existe");
+                }
+                else
+                {
+                    sumaPorcentajeTotalTransferencia += enajenante.Porcentaje.Value;
+                    porcentajeRestanteEnajenante = enajenanteBBDD.Porcentaje_derechos.Value - enajenante.Porcentaje.Value;
+                }
+            }
+
+            //Repartir Porcentajes nulos
+
+            foreach (var adquirente in listaAdquirentes)
+            {
+                if (adquirente.Porcentaje != null)
+                {
+                    sumaPorcentajes += adquirente.Porcentaje.Value;
+                }
+                else
+                {
+                    sumaPorcentajesNulos++;
+                }
+
+            }
+
+            porcentajeRestanteCU = (sumaPorcentajeTotalTransferencia - sumaPorcentajes) / sumaPorcentajesNulos;
+
+            foreach (var adquirente in listaAdquirentes)
+            {
+                Multipropietario multipropietario = new Multipropietario();
+
+                multipropietario.Fk_comuna = fk_comuna;
+                multipropietario.Manzana = manzana;
+                multipropietario.Predio = predio;
+                multipropietario.Rut = adquirente.Rut;
+
+                if (adquirente.Porcentaje != null)
+                {
+                    multipropietario.Porcentaje_derechos = adquirente.Porcentaje.Value;
+                }
+                else
+                {
+                    multipropietario.Porcentaje_derechos = porcentajeRestanteCU;
+                }
+
+                multipropietario.Fojas = fojas;
+                multipropietario.Numero_inscripcion = numeroInscripcion;
+                multipropietario.Fecha_inscripcion = fechaInscripcion;
+                multipropietario.Ano_inscripcion = fechaInscripcion.Year;
+
+                // Verificar que año de Vigencia Inicial 
+                if (fechaInscripcion.Year < anoLimite)
+                {
+                    multipropietario.Vigencia_inicial = anoLimite;
+                }
+                else
+                {
+                    multipropietario.Vigencia_inicial = fechaInscripcion.Year;
+                }
+
+                multipropietario.Vigencia_final = null;
+
+                database.Multipropietario.Add(multipropietario);
+
+
+            }
+
+            //Corroborar si enajenantes dan un 100%
+            if(sumaPorcentajeTotalTransferencia < 100)
+            {
+                foreach(var enajenante in listaEnajenantes)
+                {
+
+                    Multipropietario multipropietario = new Multipropietario();
+
+                    multipropietario.Fk_comuna = fk_comuna;
+                    multipropietario.Manzana = manzana;
+                    multipropietario.Predio = predio;
+                    multipropietario.Rut = enajenante.Rut;
+                    multipropietario.Fojas = fojas;
+                    multipropietario.Porcentaje_derechos = porcentajeRestanteEnajenante;
+                    multipropietario.Numero_inscripcion = numeroInscripcion;
+                    multipropietario.Fecha_inscripcion = fechaInscripcion;
+                    multipropietario.Ano_inscripcion = fechaInscripcion.Year;
+
+                    // Verificar que año de Vigencia Inicial 
+                    if (fechaInscripcion.Year < anoLimite)
+                    {
+                        multipropietario.Vigencia_inicial = anoLimite;
+                    }
+                    else
+                    {
+                        multipropietario.Vigencia_inicial = fechaInscripcion.Year;
+                    }
+
+                    multipropietario.Vigencia_final = null;
+
+                    database.Multipropietario.Add(multipropietario);
+                }
+                
+            }
+
+            //Checkear si es una instancia nueva de la propiedad
+            if (database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion == numeroInscripcion).Any())
+            {
+                database.Multipropietario.RemoveRange(database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio));
+            }
+            else if (database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != numeroInscripcion).Any())
+            {
+                foreach (var mp in database.Multipropietario.Where(x => x.Fk_comuna == fk_comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != numeroInscripcion))
+                {
+                    mp.Vigencia_final = fechaInscripcion.Year - 1;
+                }
+            }
+
+
+
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inscripcion inscripcion, int comuna, int manzana, int predio, FormCollection form)
@@ -129,8 +343,9 @@ namespace UAndes.ICC5103._202301.Controllers
                 }
             }
             
-            // Calcular Cantidad de Enajenantes
+            // Calcular Cantidad de Enajenantes y Adquirentes
             int cantidadEnajenantes = inscripcion.Enajenante.Count();
+            int cantidadAdquirentes = inscripcion.Adquirente.Count();
 
             // Calcular Suma de Porcentajes en Adquirentes y en Adquirentes con Porcentaje No Acreditado
             double sumaPorcentajeAdquirentes;
@@ -155,6 +370,8 @@ namespace UAndes.ICC5103._202301.Controllers
                     //Condiciones de RdP
                     if (cantidadEnajenantes == 0 && sumaPorcentajeAdquirentes <= 100 && sumaPorcentajeAdquirentesNA == 0)
                     {
+                        CreateMultipropietarioRDP(comuna, manzana, predio, adquirentesList, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
+
                         //Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
                         Rol rol = CreateRol(comuna, manzana, predio);
                         database.Rol.Add(rol);
@@ -171,22 +388,6 @@ namespace UAndes.ICC5103._202301.Controllers
                         foreach (var adquirente in adquirentesList)
                         {
                             database.Adquirente.Add(adquirente);
-
-                            // Crear instancia de Multipropietario
-                            if (database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion == inscripcion.Numero_inscripcion).Any())
-                            {
-                                database.Multipropietario.RemoveRange(database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio));
-                            }
-                            else if(database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != inscripcion.Numero_inscripcion).Any())
-                            {
-                                foreach(var mp in database.Multipropietario.Where(x => x.Fk_comuna == comuna && x.Manzana == manzana && x.Predio == predio && x.Numero_inscripcion != inscripcion.Numero_inscripcion))
-                                {
-                                    mp.Vigencia_final = inscripcion.Creacion.Year - 1;
-                                }
-                            }
-
-                            Multipropietario multiP = CreateMultipropietario(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
-                            database.Multipropietario.Add(multiP);
                         }
 
                         database.Inscripcion.Add(inscripcion);
@@ -199,35 +400,40 @@ namespace UAndes.ICC5103._202301.Controllers
                         return RedirectToAction("Error");
                     }
                 }
-                else  // No validar el RdP
+                else  //Validar Compraventa
                 {
-                    // Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
-                    Rol rol = CreateRol(comuna, manzana, predio);
-                    database.Rol.Add(rol);
-                    inscripcion.Fk_rol = rol.Id;
-
-                    if (enajenantesList != null)
+                    //Condiciones de Compraventa
+                    if (cantidadEnajenantes >=1 && cantidadAdquirentes >=1)
                     {
-                        foreach (var enajenante in enajenantesList)
-                        {
-                            database.Enajenante.Add(enajenante);
-                        }
-                    }
+                        CreateMultipropietarioCompraventa(comuna, manzana, predio, adquirentesList, enajenantesList, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
 
-                    if(adquirentesList!= null){
+                        //Agregar Rol, Enajenantes, Adquirentes e Inscripción a la BBDD
+                        Rol rol = CreateRol(comuna, manzana, predio);
+                        database.Rol.Add(rol);
+                        inscripcion.Fk_rol = rol.Id;
+
+                        if (enajenantesList != null)
+                        {
+                            foreach (var enajenante in enajenantesList)
+                            {
+                                database.Enajenante.Add(enajenante);
+                            }
+                        }
+
                         foreach (var adquirente in adquirentesList)
                         {
                             database.Adquirente.Add(adquirente);
-                            // Crear instancia de Multipropietario
-
-                            Multipropietario multiP = CreateMultipropietario(comuna, manzana, predio, adquirente.Rut, adquirente.Porcentaje, inscripcion.Fojas, inscripcion.Numero_inscripcion, inscripcion.Creacion);
-                            database.Multipropietario.Add(multiP);
                         }
+
+                        database.Inscripcion.Add(inscripcion);
+
+                        database.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    
-                    database.Inscripcion.Add(inscripcion);
-                    database.SaveChanges();
-                    return RedirectToAction("Index");
+                    else
+                    {
+                        return RedirectToAction("Error");
+                    }
                 }
             }
 
