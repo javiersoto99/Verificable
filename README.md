@@ -2,6 +2,9 @@
 
 Integrantes: Vicente Gana y Javier Soto
 
+## Sistema
+El sistema crea inscripciones de bienes raices (Compraventa o Regularización de Patrimonio), considerando a los adquirientes e enajenantes. 
+
 
 ## Consideraciones:
 
